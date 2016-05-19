@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'clark' target in the 'clark' project
+//
+
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+	#import <UIKit/UIKit.h>
+#endif
