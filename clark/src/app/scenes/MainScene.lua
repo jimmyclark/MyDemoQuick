@@ -20,8 +20,6 @@ function MainScene:ctor()
 	self.m_button:onButtonClicked(function(event)
 		self:enterTo2048();
 	end)
-	-- local sceneTOFE = require("app.scenes.SceneTOFE").new();
-    -- display.replaceScene(sceneTOFE,"fade", 0.6, display.COLOR_WHITE);
 end
 
 function MainScene:enterTo2048()

@@ -5,7 +5,7 @@ end)
 
 function SceneTOFE:ctor()
     display.newColorLayer(cc.c4b(0xfa,0xf8,0xef, 255)):addTo(self);
-
+    self.m_winStr = "";
     self.m_grid = initGrid(4,4);
 
     self.m_colors = {
@@ -26,6 +26,19 @@ function SceneTOFE:ctor()
 	};
 
 	self.m_configFile = device.writablePath .. "hxgame.config";
+
+	self.m_numColors = {
+	    [0] = cc.c3b(0x77,0x6e,0x65),
+	    [2] = cc.c3b(0x77,0x6e,0x65),
+	    [4] = cc.c3b(0x77,0x6e,0x65),
+	    [8] = cc.c3b(0x77,0x6e,0x65),
+	    [16] = cc.c3b(0x77,0x6e,0x65),
+	    [32] = cc.c3b(0x77,0x6e,0x65),
+	    [64] = cc.c3b(0x77,0x6e,0x65),
+	    [128] = cc.c3b(0x77,0x6e,0x65),
+	};
+
+	self.m_touchStart = {0,0};
 
     self:initScene();
 
@@ -58,13 +71,48 @@ function SceneTOFE:loadStatus()
 		if str then 
 			local f = loadstring(str);
 			local _grid,_bestScore,_totalScore,_WinStr,_isOver = f();
-			if _grid and _bestScore and _totalScore and _WinStr and _isOver then 
-				self.m_grid,self.m_bestScore,self.m_totalScore,self.m_isOver = _grid,_bestScore,_totalScore,_WinStr,_isOver;
+			if _grid and _bestScore and _totalScore and _WinStr then 
+				self.m_grid,self.m_bestScore,self.m_totalScore,self.m_winStr,self.m_isOver = _grid,_bestScore,_totalScore,_WinStr,_isOver;
 			end
 
 		end
 	end
+	self:reloadGame();
 
+end
+
+function SceneTOFE:reloadGame()
+	local m = #self.m_grid;
+	local n = #self.m_grid[1];
+	for i=1,m do
+		for j=1,n do 
+			self:setNum(self.m_gridShows[i][j],self.m_grid[i][j],i,j);
+		end
+	end
+	self.m_score:setString(string.format("BEST:%d     \nSCORE:%d    \n%s",self.m_bestScore,self.m_totalScore,self.m_winStr or ""))
+end
+
+function SceneTOFE:setNum(mGridView,num,i,j)
+	local s = tostring(num);
+	if s == "0" then 
+		s = "";
+		mGridView.background:setOpacity(100);
+	else
+		mGridView.background:setOpacity(255);
+	end
+	local c = self.m_colors[num];
+	if not c then 
+		c = self.m_colors[4096];
+	end
+	mGridView.numText:setString(s);
+	mGridView.background:setColor(c);
+
+	local nc = self.m_numColors[num];
+	if not nc then
+		 nc = self.m_numColors[128];
+	end
+
+	mGridView.numText:setColor(nc);
 end
 
 function SceneTOFE:createButtons()
@@ -129,7 +177,93 @@ function SceneTOFE:getPosFormId(currentX,currentY)
 end
 
 function SceneTOFE:restartGame()
-	print("---Restart Game---");
+	self.m_grid = initGrid(4,4);
+	self.m_totalScore = 0;
+	self.m_winStr = "";
+	self.m_isOver = false;
+	self:reloadGame();
+	self:saveStatus();
+end
+
+function SceneTOFE:saveStatus()
+	local gridStr = serialize(self.m_grid);
+	local isOverStr = "false";
+	if self.m_isOver then 
+		isOverStr = "true";
+	end
+ 	local str = string.format("do local grid,bestScore,totalScore,WINSTR,isOver \
+                              =%s,%d,%d,\'%s\',%s return grid,bestScore,totalScore,WINSTR,isOver end",
+                              gridStr,self.m_bestScore,self.m_totalScore,self.m_winStr,isOverStr);
+    io.writefile(self.m_configFile,str);
+end
+
+function SceneTOFE:onEnter()
+    local layer = display.newNode();
+    layer:setContentSize(display.width, display.height)
+
+    layer:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+        return self:onTouch(event.name, event.x, event.y)
+    end)
+    layer:setTouchEnabled(true);
+    layer:setTouchSwallowEnabled(false);
+    layer:addTo(self);
+end
+
+function SceneTOFE:onTouch(event, x, y)
+    if self.m_isOver then
+        return true;
+    end
+
+    if event == "began" then
+        self.m_touchStart = {x,y};
+    elseif event == "ended" then
+        local tx,ty = x-self.m_touchStart[1],y-self.m_touchStart[2];
+        if tx==0 then
+            tx = tx + 1 ;
+            ty = ty + 1 ;
+        end
+        local dis = tx*tx + ty*ty;
+        if dis<3 then   -- touch move too short will ignore
+            return true;
+        end
+        local dt = ty/tx;
+        local op_list,score,win;
+        if dt>=-1 and dt<=1 then
+            if tx>0 then
+                op_list,score,win = touch_op(self.m_grid,"right");
+            else
+                op_list,score,win = touch_op(self.m_grid,"left");
+            end
+        else
+            if ty>0 then
+                op_list,score,win = touch_op(self.m_grid,"up");
+            else
+                op_list,score,win = touch_op(self.m_grid,"down");
+            end
+        end
+        self:doOpList(op_list);
+        if win then
+            self.m_winStr = "YOUR ARE WINER";
+        end
+        self.m_totalScore = self.m_totalScore + score;
+        if self.m_totalScore> self.m_bestScore then
+            self.m_bestScore = self.m_totalScore;
+        end
+        self.m_score:setString(string.format("BEST:%d     \nSCORE:%d    \n%s",self.m_bestScore,self.m_totalScore,self.m_winStr or ""))
+        self.m_isOver = not canMove(self.m_grid)
+        self:saveStatus();
+    end
+    return true
+end
+
+function SceneTOFE:doOpList(op_list)
+    for _,op in ipairs(op_list or {}) do
+        local o = op[1]
+        if o== "setnum" then
+            local i,j,num = op[2],op[3],op[4];
+            self:setNum(self.m_gridShows[i][j],num,i,j);
+        end
+    end
 end
 
 return SceneTOFE;
