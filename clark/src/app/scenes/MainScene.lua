@@ -6,7 +6,9 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-    self.m_text = UICreator.createText("2048",40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
+	self.m_title = {"2048","ui测试"};
+
+    self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
 
     local image = {
@@ -18,13 +20,18 @@ function MainScene:ctor()
 	self.m_button:addTo(self);
 	
 	self.m_button:onButtonClicked(function(event)
-		self:enterTo2048();
+		self:enterToUIScene();
 	end)
 end
 
 function MainScene:enterTo2048()
 	local sceneTOFE = require("app.scenes.SceneTOFE").new();
     display.replaceScene(sceneTOFE,"fade", 0.6, display.COLOR_WHITE);
+end
+
+function MainScene:enterToUIScene()
+	local sceneUi = require("app.scenes.UIScene").new();
+	display.replaceScene(sceneUi,"fade", 0.6, display.COLOR_WHITE);
 end
 
 function MainScene:onEnter()
