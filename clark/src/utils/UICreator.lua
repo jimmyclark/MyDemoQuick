@@ -223,3 +223,17 @@ function UICreator.createUICheckBox(offImages,onImages,align,x,y,label)
 						:setButtonLabel(label);
     return checkBoxBtn;
 end
+
+--[[
+	@function 	: createCheckBoxGroup
+	@param		: direction     方向
+				  align 		对齐方式
+				  x,y 		 	x,y坐标
+	description : 创建选择框CheckBox组
+	return 		: 选择框CheckBox组
+]]
+function UICreator.createCheckBoxGroup(direction,align,x,y)
+	local group = cc.ui.UICheckBoxButtonGroup.new(direction)
+					:align(align,x, y);
+	return group;
+end

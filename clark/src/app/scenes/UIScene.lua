@@ -673,6 +673,25 @@ end
 
 ------------------------------------------- UIButtons ------------------------------------------------------------------
 function UIScene:showUIButtons()
+	self:createCheckBox();
+	self:createCheckBox2();
+	
+end
+
+function UIScene:updateCheckBoxButtonLabel(checkbox)
+	local state = "";
+    if checkbox:isButtonSelected() then
+    	state = "on";
+	else
+    	state = "off";
+	end
+    if not checkbox:isButtonEnabled() then
+        state = state .. " (disabled)";
+    end
+    checkbox:setButtonLabelString(string.format("state is %s", state));
+end
+
+function UIScene:createCheckBox()
 	local label = UICreator.createText("",22,display.CENTER,0,0,255,96,255);
 	self.m_uiBtn_offImages = {
 		off = "CheckBoxButtonOff.png",
@@ -685,7 +704,7 @@ function UIScene:showUIButtons()
 	    on_disabled = "CheckBoxButtonOnDisabled.png",
 	};
 
-	self.m_uiBtn = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 40,display.top - 80,label);
+	self.m_uiBtn = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 40,display.top - 120,label);
 	self.m_uiBtn:setButtonLabelOffset(-50,-40);
 	self.m_uiBtn:onButtonStateChanged(function(event)
 		self:updateCheckBoxButtonLabel(event.target);
@@ -694,7 +713,7 @@ function UIScene:showUIButtons()
     self:updateCheckBoxButtonLabel(self.m_uiBtn);
 
     label = UICreator.createText("",22,display.CENTER,0,0,96,200,96);
-    self.m_uiBtn2 = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 260,display.top - 80,label);
+    self.m_uiBtn2 = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 260,display.top - 120,label);
     self.m_uiBtn2:setButtonLabelOffset(-50, -40);
     self.m_uiBtn2:onButtonStateChanged(function(event)
     	self:updateCheckBoxButtonLabel(event.target);
@@ -710,10 +729,11 @@ function UIScene:showUIButtons()
 	    disabled = "Button01Disabled.png",
 	};
 
-	local normalLabel = UICreator.createText("This is a Push Button",18,0,0,0,0,0);
-	local pressedLabel = UICreator.createText("Button Pressed",18,0,0,255,64,64);
-	local disabledLabel = UICreator.createText("Button Disabled",18,0,0,0,0,0);
-	self.m_pushBtn = UICreator.createBtnText(images,true,display.left + 480,display.top - 80,display.LEFT_CENTER,240,60,normalLabel);
+	local normalLabel = UICreator.createText("This is a Push Button",18,display.CENTER,0,0,0,0,0);
+	local pressedLabel = UICreator.createText("Button Pressed",18,display.CENTER,0,0,255,64,64);
+	local disabledLabel = UICreator.createText("Button Disabled",18,display.CENTER,0,0,0,0,0);
+
+	self.m_pushBtn = UICreator.createBtnText(images,true,display.left + 480,display.top - 120,display.LEFT_CENTER,240,60,normalLabel);
 	self.m_pushBtn:setButtonLabel("pressed",pressedLabel);
 	self.m_pushBtn:setButtonLabel("disabled",disabledLabel);
  
@@ -733,25 +753,63 @@ function UIScene:showUIButtons()
 	    end, 1.0)
     end);
     self.m_pushBtn:addTo(self);
-
 end
 
-function UIScene:updateCheckBoxButtonLabel(checkbox)
-	local state = "";
-    if checkbox:isButtonSelected() then
-    	state = "on";
-	else
-    	state = "off";
-	end
-    if not checkbox:isButtonEnabled() then
-        state = state .. " (disabled)";
-    end
-    checkbox:setButtonLabelString(string.format("state is %s", state));
+function UIScene:createCheckBox2()
+	self.m_checkBoxGroup = UICreator.createCheckBoxGroup(display.TOP_TO_BOTTOM,display.LEFT_TOP,display.left + 40,display.top - 270);
+	self.m_radios_offImgs = {
+	    off = "RadioButtonOff.png",
+	    off_pressed = "RadioButtonOffPressed.png",
+	    off_disabled = "RadioButtonOffDisabled.png",
+	};
+	self.m_radio_onImgs = {
+		on = "RadioButtonOn.png",
+	    on_pressed = "RadioButtonOnPressed.png",
+	    on_disabled = "RadioButtonOnDisabled.png",
+	};
+
+	local label = UICreator.createText("option 1",20,display.CENTER,0,0,0,0,0);
+	local option1 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label);
+	option1:setButtonLabelOffset(20, 0);
+	local label2 = UICreator.createText("option 2",20,display.CENTER,0,0,0,0,0);
+	local option2 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label2);
+	option2:setButtonLabelOffset(20,0);
+	local label3 = UICreator.createText("option 3",20,display.CENTER,0,0,0,0,0);
+	local option3 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label3);
+	option3:setButtonLabelOffset(20, 0);
+	local label4 = UICreator.createText("option 4 disabled",20,display.CENTER,0,0,0,0,0);
+	local option4 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label4);
+	option4:setButtonLabelOffset(20, 0);
+	option4:setButtonEnabled(false);
+	self.m_checkBoxGroup:addButton(option1);
+	self.m_checkBoxGroup:addButton(option2);
+	self.m_checkBoxGroup:addButton(option3);
+	self.m_checkBoxGroup:addButton(option4);
+
+	self.m_checkBoxGroup:setButtonsLayoutMargin(10,10,10,10);
+	self.m_checkBoxGroup:onButtonSelectChanged(function(event)
+		printf("Option %d selected, Option %d unselected", event.selected, event.last);
+	end)
+	self.m_checkBoxGroup:addTo(self);
+     
+    self.m_checkBoxGroup:getButtonAtIndex(4):setButtonSelected(true);
+
+    local label = UICreator.createText("Remove option 2",16,display.CENTER,0,0,0,0,255);
+    self.m_pushBtn2 = UICreator.createBtnText("GreenButton.png",true,display.left+200,display.top-210,display.LEFT_CENTER,160,40,label);
+   	self.m_pushBtn2:onButtonPressed(function(event)
+   		event.target:getButtonLabel():setColor(display.COLOR_RED);
+   	end);
+   	self.m_pushBtn2:onButtonRelease(function(event)
+		event.target:getButtonLabel():setColor(display.COLOR_BLUE);
+   	end);
+   	self.m_pushBtn2:onButtonClicked(function(event)
+		if self.m_checkBoxGroup:getButtonsCount() == 4 then
+            self.m_checkBoxGroup:removeButtonAtIndex(2);
+            event.target:removeSelf();
+        end
+   	end);
+   	self.m_pushBtn2:addTo(self);
 end
-
-
-
-
 
 
 
