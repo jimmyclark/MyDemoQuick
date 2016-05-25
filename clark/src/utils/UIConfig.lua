@@ -45,3 +45,13 @@ UIConfig.LISTVIEW.ALIGNTOP = 3;
 UIConfig.LISTVIEW.ALIGNBOTTOM = 4;
 -- 水平居中
 UIConfig.LISTVIEW.ALGINHCENTER = 5;
+
+-------------------------------------------------------------------------------------------
+UIConfig.SCROLLVIEW = {};
+
+-- both
+UIConfig.SCROLLVIEW.BOTH = 0;
+-- 垂直
+UIConfig.SCROLLVIEW.VERTICAL = 1;
+-- 水平
+UIConfig.SCROLLVIEW.HORIZONTAL = 2;

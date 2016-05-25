@@ -28,6 +28,45 @@ function UICreator.createText(text,size,align,x,y,r,g,b,fontName)
 end
 
 --[[
+	@function 	: createImg
+	@param 		: imageName 	-- 图片名称
+				  isScale9OrNot -- 是否是9宫图
+				  x,y 			-- x,y坐标
+				  width			-- 宽度
+				  height 		-- 高度
+	description : 创建图片
+	return 		: 图片精灵
+]]
+function UICreator.createImg(imageName,isScale9OrNot,x,y,width,height)
+	if isScale9OrNot then 
+		local image = display.newScale9Sprite(imageName);
+		image:setContentSize(width,height);
+		image:pos(x,y);
+		return image;
+	end
+end
+
+--[[
+	@function 	: createUIImage
+	@param 		: imageName 	-- 图片名称
+				  x,y 			-- x,y坐标
+				  width			-- 宽度
+				  height 		-- 高度
+				  align 		-- 对齐方式
+				  isScale9OrNot -- 是否可以缩放
+	description : 创建图片
+	return 		: 图片
+]]
+function UICreator.createUIImage(imageName,x,y,width,height,align,isScale9OrNot)
+	local image = cc.ui.UIImage.new(imageName,{scale9 = isScale9OrNot or false})
+        :align(align,x,y);
+    if width or height then
+    	image:setLayoutSize(width,height);
+    end
+    return image;
+end
+
+--[[
 	@function 	: createBtnText
 	@param 		: imageName 	-- 图片名称
 				  isScale9OrNot -- 是否是9宫图
@@ -124,4 +163,34 @@ function UICreator.createListView(direction,itemAlign,viewRect,scrollbarImgH,scr
 		async = isAsysc or false
 	};
     return listView;
+end
+
+--[[
+	@function 	: createScrollView
+	@param		: direction 	滚动控件的滚动方向，默认为垂直与水平方向都可滚动
+				  viewRect 		列表控件的显示区域
+				  scrollbarImgH 水平方向的滚动条
+				  scrollbarImgV 垂直方向的滚动条
+				  bg 			背景图
+				  bgScale9 		是否可缩放
+				  r,g,b,a 		背景颜色
+	description : 创建列表ScrollView
+	return 		: 列表ScrollView
+]]
+function UICreator.createScrollView(direction,viewRect,scrollbarImgH,scrollbarImgV,bg,bgScale9,r,g,b,a)
+	local scrollView = cc.ui.UIScrollView.new{
+		direction = direction,
+		viewRect = viewRect,
+		scrollbarImgH = scrollbarImgH,
+		scrollbarImgV = scrollbarImgV,
+		bgColor = cc.c4b(r,g,b,a),
+		bg = bg,
+		bgScale9 = bgScale9 or false
+	};
+	return scrollView;
+end
+
+function UICreator.createUICheckBox(offImages,onImages)
+	-- if type 
+	-- local checkBoxBtn = cc.ui.UICheckBoxButton.new(TestUIButtonScene.CHECKBOX_BUTTON_IMAGES)
 end

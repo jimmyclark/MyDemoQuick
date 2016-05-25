@@ -6,7 +6,7 @@ function UIScene:ctor()
 	local layer = display.newColorLayer(cc.c4b(255,255,255,255));
 	layer:addTo(self);
 
-	self.m_titles = {"UIPageView","UIListView","UIScrollView"};
+	self.m_titles = {"UIPageView","UIListView","UIScrollView","UIImage","UIButtons"};
 
 	self.m_index = 1;
 
@@ -64,17 +64,33 @@ end
 
 function UIScene:enterNextScene()
 	self.m_index = self.m_index + 1;
-	local index = self.m_index%4;
+	local index = self.m_index%10;
 	if index == 1 then
 		self:showFirstUI(); 
 		self:hideSecondUI();
+		self:hideThirdUI();
+		self:hideUIImg();
 	elseif index == 2 then 
 		self:hidePageView();
 		self:showSecondUI();
+		self:hideThirdUI();
+		self:hideUIImg();
 	elseif index == 3 then 
 		self:hidePageView();
 		self:hideSecondUI();
 		self:showThirdUI();
+		self:hideUIImg();
+	elseif index == 4 then 
+		self:hidePageView();
+		self:hideSecondUI();
+		self:hideThirdUI();
+		self:showUIImage();
+	elseif index == 5 then 
+		self:hideUIImg();
+		self:hidePageView();
+		self:hideSecondUI();
+		self:hideThirdUI();
+		self:showUIButtons();
 	end
 	self.m_title:setString(self.m_titles[index]);
 
@@ -420,35 +436,267 @@ function UIScene:onTouchListener4(event)
 end
 
 function UIScene:hideSecondUI()
-	self.m_label1:setVisible(false);
-	self.m_lv:setVisible(false);
-	self.m_label2:setVisible(false);
-	self.m_lv2:setVisible(false);
-	self.m_label3:setVisible(false);
-	self.m_lv3:setVisible(false);
-	self.m_label4:setVisible(false);
-	self.m_lv4:setVisible(false);
-	self.m_lv5:setVisible(false);
+	if self.m_label1 then
+		self.m_label1:setVisible(false);
+		self.m_lv:setVisible(false);
+		self.m_label2:setVisible(false);
+		self.m_lv2:setVisible(false);
+		self.m_label3:setVisible(false);
+		self.m_lv3:setVisible(false);
+		self.m_label4:setVisible(false);
+		self.m_lv4:setVisible(false);
+		self.m_lv5:setVisible(false);
+	end
 end
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------UIScrollView-------------------------------------------------------------------------------
 function UIScene:showThirdUI()
+	self:createScrollView1();
+	self:createScrollView2();
+	self:createScrollView3();
+end
+
+function UIScene:createScrollView1()
+	if self.m_svTitle then 
+		self.m_svTitle:setVisible(true);
+	end
+
+	if self.m_svImg then 
+		self.m_svImg:setVisible(true);
+		return;
+	end
+
+	self.m_svTitle = UICreator.createText("原始图",24,display.CENTER,240,480,0,0,0);
+	self.m_svTitle:addTo(self);
+
+	self.m_svImg = UICreator.createImg("sunset.png",true,240,300,380,285);
+	self.m_svImg:addTo(self);
+end
+
+function UIScene:createScrollView2()
+	if self.m_svTitle2 then 
+		self.m_svTitle2:setVisible(true);
+	end
+
+	if self.m_svImg2 then 
+		self.m_svImg2:setVisible(true);
+		return;
+	end
+
+	self.m_svTitle2 = UICreator.createText("可滚动的图",24,display.CENTER,720,580,0,0,0);
+	self.m_svTitle2:addTo(self);
+
+    -- local viewRect = cc.rect(580,360,300,200);
+
+    -- self.m_svImg2 = UICreator.createScrollView(UIConfig.SCROLLVIEW.BOTH,viewRect,nil,nil,"sunset.png",true);
+    -- self.m_svImg2:onScroll(handler(self, self.onScrollListener));
+    -- self.m_svImg2:addTo(self);
+
+    local image = UICreator.createImg("sunset.png",true,720,460,300,200);
+    local emptyNode = cc.Node:create();
+    emptyNode:addChild(image);
+
+    local bound = image:getBoundingBox();
+    bound.width = 300;
+    bound.height = 200;
+    self.m_svImg2 = UICreator.createScrollView(UIConfig.SCROLLVIEW.BOTH,bound);
+    self.m_svImg2:addScrollNode(emptyNode);
+    self.m_svImg2:onScroll(handler(self, self.onScrollListener));
+    self.m_svImg2:addTo(self);
+end
+
+function UIScene:onScrollListener()
+end
+
+function UIScene:createScrollView3()
+	if self.m_svTitle3 then 
+		self.m_svTitle3:setVisible(true);
+	end
+
+	if self.m_svImg3 then 
+		self.m_svImg3:setVisible(true);
+		return;
+	end
+
+	self.m_svTitle3 = UICreator.createText("可拖动的图",24,display.CENTER,720,300,0,0,0);
+	self.m_svTitle3:addTo(self);
+
+	self.m_svImg3 = UICreator.createImg("sunset.png",true,720,180,300,200);
+    self.m_svImg3:addTo(self);
+
+    cc(self.m_svImg3):addComponent("components.ui.DraggableProtocol")
+        :exportMethods()
+        :setDraggableEnable(true);
+end
+
+function UIScene:hideThirdUI()
+	if self.m_svTitle then
+		self.m_svTitle:setVisible(false);
+		self.m_svImg:setVisible(false);
+		self.m_svTitle2:setVisible(false);
+		self.m_svImg2:setVisible(false);
+		self.m_svTitle3:setVisible(false);
+		self.m_svImg3:setVisible(false);
+	end
+end
+---------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------UIImage-------------------------------------------------------------------
+function UIScene:showUIImage()
+	self:showUIImg1();
+	self:showUIImg2();
+	self:showUIImg3();
+end
+
+function UIScene:showUIImg1()
+	if self.m_uiImage1 then
+		self.m_uiImage1:setVisible(true);
+		self.m_uiText1:setVisible(true);
+	end
+
+	if self.m_uiImage2 then 
+		self.m_uiImage2:setVisible(true);
+		self.m_uiText2:setVisible(true);
+		return;
+	end
+
+	self.m_uiImage1 = UICreator.createUIImage("PinkScale9Block.png",display.cx - 400,display.cy + 285,nil,nil,display.LEFT_TOP);
+    self.m_uiImage1:addTo(self);
+
+    self.m_uiText1 = UICreator.createText("fixed size",16,display.CENTER,display.cx - 350,display.cy + 170, 0,0,0);
+    self.m_uiText1:addTo(self);
+
+    self.m_uiImage2 = UICreator.createUIImage("PinkScale9Block.png",display.cx + 400,display.cy + 285,nil,nil,display.RIGHT_TOP);
+    self.m_uiImage2:addTo(self);
+
+    self.m_uiText2 = UICreator.createText("fixed size",16,display.CENTER,display.cx + 350,display.cy + 170, 0,0,0);
+    self.m_uiText2:addTo(self);
+end
+
+function UIScene:showUIImg2()
+	if self.m_uiImage3 then
+		self.m_uiImage3:setVisible(true);
+		self.m_uiText3:setVisible(true);
+	end
+
+	if self.m_uiImage4 then 
+		self.m_uiImage4:setVisible(true);
+		self.m_uiText4:setVisible(true);
+	end
+
+	if self.m_uiImage5 then 
+		self.m_uiImage5:setVisible(true);
+		self.m_uiText5:setVisible(true);
+		return;
+	end
+
+	self.m_uiImage3 = UICreator.createUIImage("PinkScale9Block.png",display.cx - 400,display.cy + 45,200,100,display.LEFT_CENTER,true);
+    self.m_uiImage3:addTo(self);
+
+    self.m_uiText3 = UICreator.createText("use scale9sprite",16,display.CENTER,display.cx - 300, display.cy - 20,0,0,0);
+    self.m_uiText3:addTo(self);
+
+    self.m_uiImage4 = UICreator.createUIImage("PinkScale9Block.png",display.cx + 400,display.cy + 45,200,100,display.RIGHT_CENTER,true);
+    self.m_uiImage4:addTo(self);
+
+    self.m_uiText4 = UICreator.createText("use scale9sprite",16,display.CENTER,display.cx + 300, display.cy - 20,0,0,0);
+    self.m_uiText4:addTo(self);
+
+    self.m_uiImage5 = UICreator.createUIImage("PinkScale9Block.png",display.cx,display.cy + 70,200,150,display.CENTER,true);
+    self.m_uiImage5:addTo(self);
+
+    self.m_uiText5 = UICreator.createText("use scale9sprite",16,display.CENTER,display.cx, display.cy - 20,0,0,0);
+    self.m_uiText5:addTo(self);
 
 end
 
+function UIScene:showUIImg3()
+	if self.m_uiImage6 then 
+		self.m_uiImage6:setVisible(true);
+		self.m_uiText6:setVisible(true);
+	end
 
+	if self.m_uiImage7 then 
+		self.m_uiImage7:setVisible(true);
+		self.m_uiText7:setVisible(true);
+	end
 
+	if self.m_uiImage8 then 
+		self.m_uiImage8:setVisible(true);
+		self.m_uiText8:setVisible(true);
+		return;
+	end
 
+	self.m_uiImage6 = UICreator.createUIImage("PinkScale9Block.png",display.cx - 400,display.cy - 225,200,100,display.LEFT_BOTTOM);
+    self.m_uiImage6:addTo(self);
 
+    self.m_uiText6 = UICreator.createText("use scaleX, scaleY",16,display.CENTER,display.cx - 300, display.cy - 240,0,0,0);
+    self.m_uiText6:addTo(self);
 
+    self.m_uiImage7 = UICreator.createUIImage("PinkScale9Block.png",display.cx + 400,display.cy - 225,200,100,display.RIGHT_BOTTOM);
+    self.m_uiImage7:addTo(self);
 
+    self.m_uiText7 = UICreator.createText("use scaleX, scaleY",16,display.CENTER,display.cx + 300, display.cy - 240,0,0,0);
+    self.m_uiText7:addTo(self);
 
+    self.m_uiImage8 = UICreator.createUIImage("PinkScale9Block.png",display.cx,display.cy - 150,200,150,display.CENTER);
+    self.m_uiImage8:addTo(self);
 
+    self.m_uiText8 = UICreator.createText("use scaleX, scaleY",16,display.CENTER,display.cx, display.cy - 240,0,0,0);
+    self.m_uiText8:addTo(self);
+end
 
+function UIScene:hideUIImg()
+	if self.m_uiImage1 then
+		self.m_uiImage1:setVisible(false);
+		self.m_uiText1:setVisible(false); 
+		self.m_uiImage2:setVisible(false);
+		self.m_uiText2:setVisible(false); 
+		self.m_uiImage3:setVisible(false);
+		self.m_uiText3:setVisible(false); 
+		self.m_uiImage4:setVisible(false);
+		self.m_uiText4:setVisible(false); 
+		self.m_uiImage5:setVisible(false);
+		self.m_uiText5:setVisible(false); 
+		self.m_uiImage6:setVisible(false);
+		self.m_uiText6:setVisible(false); 
+		self.m_uiImage7:setVisible(false);
+		self.m_uiText7:setVisible(false); 
+		self.m_uiImage8:setVisible(false);
+		self.m_uiText8:setVisible(false); 
+	end
+end
 
+------------------------------------------------------------------------------------------------------------------------
 
+------------------------------------------- UIButtons ------------------------------------------------------------------
+function UIScene:showUIButtons()
+	local label = UICreator.createText("",22,display.CENTER,0,0,255,96,255)
+	-- self.m_checkBoxBtn1 = cc.ui.UICheckBoxButton.new(TestUIButtonScene.CHECKBOX_BUTTON_IMAGES)
+ --        :setButtonLabelOffset(0, -40)
+ --   	self.m_checkBoxBtn1:onButtonStateChanged(function(event)
+ --        self:updateCheckBoxButtonLabel(event.target);
+ --    end)
+ --        :align(display.LEFT_CENTER, display.left + 40, display.top - 80)
+ --        :addTo(self)
+    -- updateCheckBoxButtonLabel(checkBoxButton1)
+
+end
+
+function UIScene:updateCheckBoxButtonLabel(checkbox)
+	local state = "";
+    if checkbox:isButtonSelected() then
+    	state = "on";
+	else
+    	state = "off";
+	end
+    if not checkbox:isButtonEnabled() then
+        state = state .. " (disabled)";
+    end
+    checkbox:setButtonLabelString(string.format("state is %s", state));
+end
 
 
 
