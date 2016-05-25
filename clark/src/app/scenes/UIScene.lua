@@ -673,15 +673,66 @@ end
 
 ------------------------------------------- UIButtons ------------------------------------------------------------------
 function UIScene:showUIButtons()
-	local label = UICreator.createText("",22,display.CENTER,0,0,255,96,255)
-	-- self.m_checkBoxBtn1 = cc.ui.UICheckBoxButton.new(TestUIButtonScene.CHECKBOX_BUTTON_IMAGES)
- --        :setButtonLabelOffset(0, -40)
- --   	self.m_checkBoxBtn1:onButtonStateChanged(function(event)
- --        self:updateCheckBoxButtonLabel(event.target);
- --    end)
- --        :align(display.LEFT_CENTER, display.left + 40, display.top - 80)
- --        :addTo(self)
-    -- updateCheckBoxButtonLabel(checkBoxButton1)
+	local label = UICreator.createText("",22,display.CENTER,0,0,255,96,255);
+	self.m_uiBtn_offImages = {
+		off = "CheckBoxButtonOff.png",
+	    off_pressed = "CheckBoxButtonOffPressed.png",
+	    off_disabled = "CheckBoxButtonOffDisabled.png",
+	};
+	self.m_uiBtn_onImages = {
+		on = "CheckBoxButtonOn.png",
+	    on_pressed = "CheckBoxButtonOnPressed.png",
+	    on_disabled = "CheckBoxButtonOnDisabled.png",
+	};
+
+	self.m_uiBtn = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 40,display.top - 80,label);
+	self.m_uiBtn:setButtonLabelOffset(-50,-40);
+	self.m_uiBtn:onButtonStateChanged(function(event)
+		self:updateCheckBoxButtonLabel(event.target);
+	end);
+	self.m_uiBtn:addTo(self);
+    self:updateCheckBoxButtonLabel(self.m_uiBtn);
+
+    label = UICreator.createText("",22,display.CENTER,0,0,96,200,96);
+    self.m_uiBtn2 = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 260,display.top - 80,label);
+    self.m_uiBtn2:setButtonLabelOffset(-50, -40);
+    self.m_uiBtn2:onButtonStateChanged(function(event)
+    	self:updateCheckBoxButtonLabel(event.target);
+    end);
+    self.m_uiBtn2:setButtonSelected(true);
+    self.m_uiBtn2:addTo(self);
+
+    self:updateCheckBoxButtonLabel(self.m_uiBtn2);
+
+    local images = {
+	    normal = "Button01.png",
+	    pressed = "Button01Pressed.png",
+	    disabled = "Button01Disabled.png",
+	};
+
+	local normalLabel = UICreator.createText("This is a Push Button",18,0,0,0,0,0);
+	local pressedLabel = UICreator.createText("Button Pressed",18,0,0,255,64,64);
+	local disabledLabel = UICreator.createText("Button Disabled",18,0,0,0,0,0);
+	self.m_pushBtn = UICreator.createBtnText(images,true,display.left + 480,display.top - 80,display.LEFT_CENTER,240,60,normalLabel);
+	self.m_pushBtn:setButtonLabel("pressed",pressedLabel);
+	self.m_pushBtn:setButtonLabel("disabled",disabledLabel);
+ 
+    self.m_pushBtn:onButtonClicked(function(event)
+        if math.random(0, 1) == 0 then
+        	self.m_uiBtn:setButtonEnabled(not self.m_uiBtn:isButtonEnabled())
+		else
+        	self.m_uiBtn2:setButtonEnabled(not self.m_uiBtn2:isButtonEnabled())
+		end
+
+        local button = event.target;
+        button:setButtonEnabled(false);
+       	button:setButtonLabelString("disabled", "Button Enable after 1s");
+        self:performWithDelay(function()
+            button:setButtonLabelString("disabled", "Button Disabled")
+            button:setButtonEnabled(true);
+	    end, 1.0)
+    end);
+    self.m_pushBtn:addTo(self);
 
 end
 

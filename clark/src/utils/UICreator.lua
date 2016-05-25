@@ -190,7 +190,36 @@ function UICreator.createScrollView(direction,viewRect,scrollbarImgH,scrollbarIm
 	return scrollView;
 end
 
-function UICreator.createUICheckBox(offImages,onImages)
-	-- if type 
-	-- local checkBoxBtn = cc.ui.UICheckBoxButton.new(TestUIButtonScene.CHECKBOX_BUTTON_IMAGES)
+--[[
+	@function 	: createUICheckBox
+	@param		: offImages 	off模式的图片
+				  onImages 		on模式的图片
+				  align 		对齐方式
+				  x,y 		 	x,y坐标
+				  label 		文字 
+	description : 创建选择框CheckBox
+	return 		: 选择框CheckBox
+]]
+function UICreator.createUICheckBox(offImages,onImages,align,x,y,label)
+	local params = {};
+	if type(offImages) == "table" then 
+		params.off = offImages.off;
+		params.off_pressed = offImages.off_pressed;
+		params.off_disabled = offImages.off_disabled
+	else
+		params.off = offImages;
+	end
+
+	if type(onImages) == "table" then 
+		params.on = onImages.on;
+		params.on_pressed = onImages.on_pressed;
+		params.on_disabled = onImages.on_disabled
+	else
+		params.on = onImages;
+	end
+
+	local checkBoxBtn = cc.ui.UICheckBoxButton.new(params)
+						:align(align,x,y)
+						:setButtonLabel(label);
+    return checkBoxBtn;
 end
