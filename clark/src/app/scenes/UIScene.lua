@@ -908,98 +908,145 @@ end
 -----------------------------------------------UISlider--------------------------------------------------------------
 function UIScene:showUISlider()
 	self:createUISlider();
+    self:createUISlider2();
 end
 
 function UIScene:createUISlider()
 	local barHeight = 40;
     local barWidth = 400;
 
-    self.m_slider_label = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 60,
+    self.m_slider_label = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 100,
     						0,0,0);
     self.m_slider_label:addTo(self);
 
-    -- self.m_slider = UICreator.createUISlider(display.LEFT_TO_RIGHT,);
-    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
-    --     :onSliderValueChanged(function(event)
-    --         valueLabel:setString(string.format("value = %0.2f", event.value))
-    --     end)
-    --     :setSliderSize(barWidth, barHeight)
-    --     :setSliderValue(75)
-    --     :align(display.LEFT_BOTTOM, display.left + 40, display.top - 80)
-    --     :addTo(self)
-    -- cc.ui.UILabel.new({text = "align LEFT_BOTTOM", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 30)
-    --     :addTo(self)
+    local barImages = {
+    	 bar = "SliderBar.png",
+	};
+
+	local buttonImages = {
+    	button = "SliderButton.png",
+	};
+
+    self.m_slider = UICreator.createUISlider(display.LEFT_TO_RIGHT,barImages,buttonImages,true,barWidth,barHeight,75,display.LEFT_BOTTOM,display.left + 40,display.top - 120);
+    self.m_slider:onSliderValueChanged(function(event)
+            self.m_slider_label:setString(string.format("value = %0.2f", event.value))
+    end);
+    self.m_slider:addTo(self);
+
+   	self.m_slider_title = UICreator.createText("align LEFT_BOTTOM",14,display.LEFT_CENTER,display.left + 40,display.top - 70,0,0,0);
+   	self.m_slider_title:addTo(self);
+
+    barWidth = 280;
+
+    self.m_slider_label2 = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 180);
+    self.m_slider_label2:addTo(self);
+
+    self.m_slider2 = UICreator.createUISlider(display.LEFT_TO_RIGHT,barImages,buttonImages,true,barWidth,barHeight,75,display.CENTER, display.left + barWidth / 2 + 40, display.top - 200 + barHeight / 2);
+    self.m_slider2:onSliderValueChanged(function(event)
+    	self.m_slider_label2:setString(string.format("value = %0.2f",event.value));
+    end);
+    self.m_slider2:addTo(self);
+
+	self.m_slider_title2 = UICreator.createText("align CENTER",14,display.LEFT_CENTER,display.left + 40,display.top - 150,0,0,0);
+   	self.m_slider_title2:addTo(self);    
+
+    barWidth = 340;
+    self.m_slider_label3 = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 260,0,0,0);
+    self.m_slider_label3:addTo(self);
+
+    self.m_slider3 = UICreator.createUISlider(display.LEFT_TO_RIGHT,barImages,buttonImages,true,barWidth,barHeight,75,display.RIGHT_TOP, display.left + barWidth + 40, display.top - 220 - barHeight / 2);
+    self.m_slider3:onSliderValueChanged(function(event)
+    	self.m_slider_label3:setString(string.format("value = %0.2f",event.value));
+    end);
+    self.m_slider3:addTo(self);
+    self.m_slider_title3 = UICreator.createText("align RIGHT_TOP",14,display.LEFT_CENTER,display.left + 40,display.top - 230,0,0,0);
+   	self.m_slider_title3:addTo(self);
+
+   	barWidth = 360;
+   	self.m_slider_label4 = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 340,0,0,0);
+   	self.m_slider_label4:addTo(self);
+
+   	self.m_slider4 = UICreator.createUISlider(display.RIGHT_TO_LEFT,barImages,buttonImages,true,barWidth,barHeight,75,display.LEFT_TOP, display.left + 40, display.top - 320);
+   	self.m_slider4:onSliderValueChanged(function(event)
+    	self.m_slider_label4:setString(string.format("value = %0.2f",event.value));
+    end);
+    self.m_slider4:addTo(self);
+
+    self.m_slider_title4 = UICreator.createText("RIGHT_TO_LEFT, align LEFT_TOP",14,display.LEFT_CENTER,display.left + 40,display.top - 310,0,0,0);
+    self.m_slider_title4:addTo(self);
+
+    barWidth = 240;
+    self.m_slider_label5 = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 420,0,0,0);
+    self.m_slider_label5:addTo(self);
+
+    self.m_slider5 = UICreator.createUISlider(display.LEFT_TO_RIGHT,barImages,buttonImages,false,barWidth,barHeight,75,display.LEFT_TOP,display.left + 40,display.top -400);
+    self.m_slider5:onSliderValueChanged(function(event)
+        self.m_slider_label5:setString(string.format("value = %0.2f", event.value));
+    end);
+    self.m_slider5:addTo(self);
+
+    self.m_slider_title5 = UICreator.createText("fixed size image, align LEFT_TOP",14,display.LEFT_CENTER,display.left + 40,display.top - 450,0,0,0);
+    self.m_slider_title5:addTo(self);
+end
+
+function UIScene:createUISlider2()
+    local barWidth = 40;
+    local barHeight = 240;
+
+    self.m_slider_label = UICreator.createText("",14,display.LEFT_CENTER,display.cx + barWidth + 160,display.top - 60,0,0,0);
 
 
-    -- local barWidth = 280
-    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 140)
-    --     :addTo(self)
-    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
-    --     :onSliderValueChanged(function(event)
-    --         valueLabel:setString(string.format("value = %0.2f", event.value))
-    --     end)
-    --     :setSliderSize(barWidth, barHeight)
-    --     :setSliderValue(75)
-    --     :align(display.CENTER, display.left + barWidth / 2 + 40, display.top - 160 + barHeight / 2)
-    --     :addTo(self)
-    -- cc.ui.UILabel.new({text = "align CENTER", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 110)
-    --     :addTo(self)
+    local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
+        :align(display.LEFT_CENTER, display.cx + barWidth + 160, display.top - 60)
+        :addTo(self)
+    cc.ui.UISlider.new(display.TOP_TO_BOTTOM, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
+        :onSliderValueChanged(function(event)
+            valueLabel:setString(string.format("value = %0.2f", event.value))
+        end)
+        :setSliderSize(barWidth, barHeight)
+        :setSliderButtonRotation(90)
+        :setSliderValue(75)
+        :align(display.CENTER_TOP, display.cx + 160, display.top - 40)
+        :addTo(self)
+    cc.ui.UILabel.new({text = "TOP_TO_BOTTOM, align CENTER_TOP", size = 14, color = display.COLOR_BLACK})
+        :align(display.LEFT_CENTER, display.cx + 140, display.top - 30)
+        :addTo(self)
 
 
-    -- local barWidth = 340
-    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 220)
-    --     :addTo(self)
-    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
-    --     :onSliderValueChanged(function(event)
-    --         valueLabel:setString(string.format("value = %0.2f", event.value))
-    --     end)
-    --     :setSliderSize(barWidth, barHeight)
-    --     :setSliderValue(75)
-    --     :align(display.RIGHT_TOP, display.left + barWidth + 40, display.top - 180 - barHeight / 2)
-    --     :addTo(self)
-    -- cc.ui.UILabel.new({text = "align RIGHT_TOP", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 190)
-    --     :addTo(self)
+    local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
+        :align(display.LEFT_CENTER, display.cx + barWidth + 260, display.top - 180)
+        :addTo(self)
+    cc.ui.UISlider.new(display.BOTTOM_TO_TOP, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
+        :onSliderValueChanged(function(event)
+            valueLabel:setString(string.format("value = %0.2f", event.value))
+        end)
+        :setSliderSize(barWidth, barHeight)
+        :setSliderButtonRotation(90)
+        :setSliderValue(75)
+        :align(display.CENTER_BOTTOM, display.cx + 260, display.top - 380)
+        :addTo(self)
+    cc.ui.UILabel.new({text = "BOTTOM_TO_TOP,\nalign CENTER_BOTTOM", size = 14, color = display.COLOR_BLACK})
+        :align(display.LEFT_CENTER, display.cx + 240, display.top - 120)
+        :addTo(self)
 
 
-    -- local barWidth = 360
-    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 300)
-    --     :addTo(self)
-    -- cc.ui.UISlider.new(display.RIGHT_TO_LEFT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
-    --     :onSliderValueChanged(function(event)
-    --         valueLabel:setString(string.format("value = %0.2f", event.value))
-    --     end)
-    --     :setSliderSize(barWidth, barHeight)
-    --     :setSliderValue(75)
-    --     :align(display.LEFT_TOP, display.left + 40, display.top - 280)
-    --     :addTo(self)
-    -- cc.ui.UILabel.new({text = "RIGHT_TO_LEFT, align LEFT_TOP", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 270)
-    --     :addTo(self)
-
-
-    -- local barWidth = 240
-    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 380)
-    --     :addTo(self)
-    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, {
-    --         bar = "SliderBarFixed.png",
-    --         button = "SliderButton.png",
-    --     })
-    --     :onSliderValueChanged(function(event)
-    --         valueLabel:setString(string.format("value = %0.2f", event.value))
-    --     end)
-    --     :setSliderValue(75)
-    --     :align(display.LEFT_TOP, display.left + 40, display.top - 360)
-    --     :addTo(self)
-    -- cc.ui.UILabel.new({text = "fixed size image, align LEFT_TOP", size = 14, color = display.COLOR_BLACK})
-    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 350)
-    --     :addTo(self)
+    local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
+        :align(display.LEFT_CENTER, display.cx + barWidth + 60, display.top - 420)
+        :addTo(self)
+    cc.ui.UISlider.new(display.TOP_TO_BOTTOM, {
+            bar = "SliderBarFixedV.png",
+            button = "SliderButton.png",
+        })
+        :onSliderValueChanged(function(event)
+            valueLabel:setString(string.format("value = %0.2f", event.value))
+        end)
+        :setSliderButtonRotation(90)
+        :setSliderValue(75)
+        :align(display.CENTER_TOP, display.cx + 60, display.cy - 40)
+        :addTo(self)
+    cc.ui.UILabel.new({text = "TOP_TO_BOTTOM,\nfixed size image,\nalign CENTER_TOP", size = 14, color = display.COLOR_BLACK})
+        :align(display.LEFT_CENTER, display.cx + 60, display.top - 330)
+        :addTo(self)
 end
 
 
