@@ -6,9 +6,9 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试"};
+	self.m_title = {"2048","ui测试","空间A","B","C"};
 
-    self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
+    -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
 
     local image = {
@@ -16,12 +16,33 @@ function MainScene:ctor()
     	pressed = "GreenScale9Block.png",
     	disabled = "GreenButton.png",
 	};
-	self.m_button = UICreator.createBtnText(image,true,display.cx,display.cy+60,display.CENTER,200,100,self.m_text);
-	self.m_button:addTo(self);
-	
-	self.m_button:onButtonClicked(function(event)
-		self:enterToUIScene();
-	end)
+
+	local viewRect = cc.rect(display.cx/3,display.cy/3,display.width - 50,display.height-50);
+	local padding = {left=60,right=60,top=60,bottom=60};
+	self.m_btnGroup = UICreator.createPageView(viewRect,3,3,padding,false);
+	self.m_btnGroup:addTo(self);
+	local x,y;
+
+	for i=1,#self.m_title do
+        local item = self.m_btnGroup:newItem();
+        local content;
+		
+  		local m_label = UICreator.createText(self.m_title[i],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
+  		local m_button = UICreator.createBtnText(image,true,x,y,display.CENTER,140,140,m_label);
+		
+		m_button:onButtonClicked(function(event)
+			if i == 1 then 
+				self:enterTo2048();
+			elseif i== 2 then
+				self:enterToUIScene();
+			end
+		end)
+        item:addChild(m_button);
+        self.m_btnGroup:addItem(item); 
+
+
+    end
+    self.m_btnGroup:reload()
 end
 
 function MainScene:enterTo2048()

@@ -61,6 +61,18 @@ function SceneTOFE:initScene()
 	self:createGridView();
 	self:createButtons();
 
+	local images = {
+		pressed = "b2.png",
+		normal = "b1.png"
+	};
+	self.m_backBtn = UICreator.createBtnText(images,true,display.left + 100,display.top - 100,display.CENTER);
+	self.m_backBtn:addTo(self);
+
+	self.m_backBtn:onButtonClicked(function(event)
+		local mainScene = require("app.scenes.mainScene").new();
+		display.replaceScene(mainScene,"fadeDown", 0.6, display.COLOR_WHITE);
+	end);
+
 	self:loadStatus();
 
 end

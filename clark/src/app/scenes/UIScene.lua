@@ -15,6 +15,19 @@ function UIScene:ctor()
 	self:showFirstUI();
 
 	self:createNextButtons();
+
+	local images = {
+		pressed = "b2.png",
+		normal = "b1.png"
+	};
+
+	self.m_backBtn = UICreator.createBtnText(images,true,display.left + 44,display.top - 100,display.CENTER);
+	self.m_backBtn:addTo(self);
+
+	self.m_backBtn:onButtonClicked(function(event)
+		local mainScene = require("app.scenes.mainScene").new();
+		display.replaceScene(mainScene,"crossFade", 0.6, display.COLOR_WHITE);
+	end);
 end
 
 function UIScene:showFirstUI()
@@ -64,6 +77,9 @@ end
 
 function UIScene:enterNextScene()
 	self.m_index = self.m_index + 1;
+	if self.m_index == 7 then 
+		self.m_index = 1;
+	end
 	local index = self.m_index;
 	if index == 1 then
 		self:showFirstUI(); 
@@ -71,30 +87,35 @@ function UIScene:enterNextScene()
 		self:hideThirdUI();
 		self:hideUIImg();
 		self:hideUIButtons();
+		self:hideUISlider();
 	elseif index == 2 then 
 		self:hidePageView();
 		self:showSecondUI();
 		self:hideThirdUI();
 		self:hideUIImg();
 		self:hideUIButtons();
+		self:hideUISlider();
 	elseif index == 3 then 
 		self:hidePageView();
 		self:hideSecondUI();
 		self:showThirdUI();
 		self:hideUIImg();
 		self:hideUIButtons();
+		self:hideUISlider();
 	elseif index == 4 then 
 		self:hidePageView();
 		self:hideSecondUI();
 		self:hideThirdUI();
 		self:showUIImage();
 		self:hideUIButtons();
+		self:hideUISlider();
 	elseif index == 5 then 
 		self:hideUIImg();
 		self:hidePageView();
 		self:hideSecondUI();
 		self:hideThirdUI();
 		self:showUIButtons();
+		self:hideUISlider();
 	elseif index == 6 then
 		self:hideUIImg();
 		self:hidePageView();
@@ -102,6 +123,8 @@ function UIScene:enterNextScene()
 		self:hideThirdUI();
 		self:hideUIButtons();
 		self:showUISlider();
+	else
+		self.m_index = 0;
 	end
 	self.m_title:setString(self.m_titles[index]);
 
@@ -703,9 +726,11 @@ function UIScene:updateCheckBoxButtonLabel(checkbox)
 end
 
 function UIScene:createCheckBox()
+
 	if self.m_uiBtn then 
 		self.m_uiBtn:setVisible(true);
 		self.m_uiBtn2:setVisible(true);
+		self.m_pushBtn:setVisible(true);
 		return;
 	end
 
@@ -770,67 +795,72 @@ function UIScene:createCheckBox()
 	    end, 1.0)
     end);
     self.m_pushBtn:addTo(self);
+
 end
 
 function UIScene:createCheckBox2()
 	if self.m_checkBoxGroup then 
 		self.m_checkBoxGroup:setVisible(true);
-		self.m_pushBtn2:setVisible(true);
-		return;
+	else
+		self.m_checkBoxGroup = UICreator.createCheckBoxGroup(display.TOP_TO_BOTTOM,display.LEFT_TOP,display.left + 40,display.top - 270);
+		local m_radios_offImgs = {
+		    off = "RadioButtonOff.png",
+		    off_pressed = "RadioButtonOffPressed.png",
+		    off_disabled = "RadioButtonOffDisabled.png",
+		};
+		local m_radio_onImgs = {
+			on = "RadioButtonOn.png",
+		    on_pressed = "RadioButtonOnPressed.png",
+		    on_disabled = "RadioButtonOnDisabled.png",
+		};
+
+		local label = UICreator.createText("option 1",20,display.CENTER,0,0,0,0,0);
+		local option1 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label);
+		option1:setButtonLabelOffset(20, 0);
+		local label2 = UICreator.createText("option 2",20,display.CENTER,0,0,0,0,0);
+		local option2 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label2);
+		option2:setButtonLabelOffset(20,0);
+		local label3 = UICreator.createText("option 3",20,display.CENTER,0,0,0,0,0);
+		local option3 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label3);
+		option3:setButtonLabelOffset(20, 0);
+		local label4 = UICreator.createText("option 4 disabled",20,display.CENTER,0,0,0,0,0);
+		local option4 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label4);
+		option4:setButtonLabelOffset(20, 0);
+		option4:setButtonEnabled(false);
+		self.m_checkBoxGroup:addButton(option1);
+		self.m_checkBoxGroup:addButton(option2);
+		self.m_checkBoxGroup:addButton(option3);
+		self.m_checkBoxGroup:addButton(option4);
+
+		self.m_checkBoxGroup:setButtonsLayoutMargin(10,10,10,10);
+		self.m_checkBoxGroup:onButtonSelectChanged(function(event)
+			printf("Option %d selected, Option %d unselected", event.selected, event.last);
+		end)
+		self.m_checkBoxGroup:addTo(self);
+	     
+	    self.m_checkBoxGroup:getButtonAtIndex(4):setButtonSelected(true);
 	end
-	self.m_checkBoxGroup = UICreator.createCheckBoxGroup(display.TOP_TO_BOTTOM,display.LEFT_TOP,display.left + 40,display.top - 270);
-	local m_radios_offImgs = {
-	    off = "RadioButtonOff.png",
-	    off_pressed = "RadioButtonOffPressed.png",
-	    off_disabled = "RadioButtonOffDisabled.png",
-	};
-	local m_radio_onImgs = {
-		on = "RadioButtonOn.png",
-	    on_pressed = "RadioButtonOnPressed.png",
-	    on_disabled = "RadioButtonOnDisabled.png",
-	};
+	if self.m_pushBtn2 then 
+		self.m_pushBtn2:setVisible(true);
+	else
+	    local label = UICreator.createText("Remove option 2",16,display.CENTER,0,0,0,0,255);
+	    self.m_pushBtn2 = UICreator.createBtnText("GreenButton.png",true,display.left+200,display.top-210,display.LEFT_CENTER,160,40,label);
+	   	self.m_pushBtn2:onButtonPressed(function(event)
+	   		event.target:getButtonLabel():setColor(display.COLOR_RED);
+	   	end);
+	   	self.m_pushBtn2:onButtonRelease(function(event)
+			event.target:getButtonLabel():setColor(display.COLOR_BLUE);
+	   	end);
+	   	self.m_pushBtn2:onButtonClicked(function(event)
+			if self.m_checkBoxGroup:getButtonsCount() == 4 then
+	            self.m_checkBoxGroup:removeButtonAtIndex(2);
+	            event.target:removeSelf();
+	            self.m_pushBtn2= nil;
+	        end
+	   	end);
+	   	self.m_pushBtn2:addTo(self);
+	end
 
-	local label = UICreator.createText("option 1",20,display.CENTER,0,0,0,0,0);
-	local option1 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label);
-	option1:setButtonLabelOffset(20, 0);
-	local label2 = UICreator.createText("option 2",20,display.CENTER,0,0,0,0,0);
-	local option2 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label2);
-	option2:setButtonLabelOffset(20,0);
-	local label3 = UICreator.createText("option 3",20,display.CENTER,0,0,0,0,0);
-	local option3 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label3);
-	option3:setButtonLabelOffset(20, 0);
-	local label4 = UICreator.createText("option 4 disabled",20,display.CENTER,0,0,0,0,0);
-	local option4 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label4);
-	option4:setButtonLabelOffset(20, 0);
-	option4:setButtonEnabled(false);
-	self.m_checkBoxGroup:addButton(option1);
-	self.m_checkBoxGroup:addButton(option2);
-	self.m_checkBoxGroup:addButton(option3);
-	self.m_checkBoxGroup:addButton(option4);
-
-	self.m_checkBoxGroup:setButtonsLayoutMargin(10,10,10,10);
-	self.m_checkBoxGroup:onButtonSelectChanged(function(event)
-		printf("Option %d selected, Option %d unselected", event.selected, event.last);
-	end)
-	self.m_checkBoxGroup:addTo(self);
-     
-    self.m_checkBoxGroup:getButtonAtIndex(4):setButtonSelected(true);
-
-    local label = UICreator.createText("Remove option 2",16,display.CENTER,0,0,0,0,255);
-    self.m_pushBtn2 = UICreator.createBtnText("GreenButton.png",true,display.left+200,display.top-210,display.LEFT_CENTER,160,40,label);
-   	self.m_pushBtn2:onButtonPressed(function(event)
-   		event.target:getButtonLabel():setColor(display.COLOR_RED);
-   	end);
-   	self.m_pushBtn2:onButtonRelease(function(event)
-		event.target:getButtonLabel():setColor(display.COLOR_BLUE);
-   	end);
-   	self.m_pushBtn2:onButtonClicked(function(event)
-		if self.m_checkBoxGroup:getButtonsCount() == 4 then
-            self.m_checkBoxGroup:removeButtonAtIndex(2);
-            event.target:removeSelf();
-        end
-   	end);
-   	self.m_pushBtn2:addTo(self);
 end
 
 function UIScene:createCheckBox3()
@@ -891,7 +921,9 @@ function UIScene:hideUIButtons()
 	if self.m_uiBtn then 
 		self.m_checkBoxGroup:setVisible(false);
 		self.m_pushBtn:setVisible(false);
-		self.m_pushBtn2:setVisible(false);
+		if self.m_pushBtn2 then
+			self.m_pushBtn2:setVisible(false);
+		end
 		self.m_uiBtn:setVisible(false);
 		self.m_uiBtn2:setVisible(false);
 		self.m_uiBtn3:setVisible(false);
@@ -914,6 +946,30 @@ end
 function UIScene:createUISlider()
 	local barHeight = 40;
     local barWidth = 400;
+
+    if self.m_slider_label then 
+    	self.m_slider_label:setVisible(true);
+		self.m_slider:setVisible(true);
+		self.m_slider_title:setVisible(true);
+
+		self.m_slider_label2:setVisible(true);
+		self.m_slider2:setVisible(true);
+		self.m_slider_title2:setVisible(true);
+		
+		self.m_slider_label3:setVisible(true);
+		self.m_slider3:setVisible(true);
+		self.m_slider_title3:setVisible(true);
+
+		self.m_slider_label4:setVisible(true);
+		self.m_slider4:setVisible(true);
+		self.m_slider_title4:setVisible(true);
+
+		self.m_slider_label5:setVisible(true);
+		self.m_slider5:setVisible(true);
+		self.m_slider_title5:setVisible(true);
+		return;
+    end
+
 
     self.m_slider_label = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 100,
     						0,0,0);
@@ -1001,6 +1057,21 @@ function UIScene:createUISlider2()
         button = "SliderButton.png",
     };
 
+    if self.m_slider_label6 then 
+    	self.m_slider_label6:setVisible(true);
+		self.m_slider6:setVisible(true);
+		self.m_slider_title6:setVisible(true);
+		
+		self.m_slider_label7:setVisible(true);
+		self.m_slider7:setVisible(true);
+		self.m_slider_title7:setVisible(true);
+
+		self.m_slider_label8:setVisible(true);
+		self.m_slider8:setVisible(true);
+		self.m_slider_title8:setVisible(true);
+		return;
+    end
+
     self.m_slider_label6 = UICreator.createText("",14,display.LEFT_CENTER,display.cx + barWidth + 160,display.top - 60,0,0,0);
     self.m_slider_label6:addTo(self);
 
@@ -1039,6 +1110,42 @@ function UIScene:createUISlider2()
 
     self.m_slider_title8 = UICreator.createText("TOP_TO_BOTTOM,\nfixed size image,\nalign CENTER_TOP",14,display.LEFT_CENTER,display.cx + 60, display.top - 330,0,0,0);
     self.m_slider_title8:addTo(self);
+end
+
+function UIScene:hideUISlider()
+	if self.m_slider_label then 
+		self.m_slider_label:setVisible(false);
+		self.m_slider:setVisible(false);
+		self.m_slider_title:setVisible(false);
+
+		self.m_slider_label2:setVisible(false);
+		self.m_slider2:setVisible(false);
+		self.m_slider_title2:setVisible(false);
+		
+		self.m_slider_label3:setVisible(false);
+		self.m_slider3:setVisible(false);
+		self.m_slider_title3:setVisible(false);
+
+		self.m_slider_label4:setVisible(false);
+		self.m_slider4:setVisible(false);
+		self.m_slider_title4:setVisible(false);
+
+		self.m_slider_label5:setVisible(false);
+		self.m_slider5:setVisible(false);
+		self.m_slider_title5:setVisible(false);
+
+		self.m_slider_label6:setVisible(false);
+		self.m_slider6:setVisible(false);
+		self.m_slider_title6:setVisible(false);
+		
+		self.m_slider_label7:setVisible(false);
+		self.m_slider7:setVisible(false);
+		self.m_slider_title7:setVisible(false);
+
+		self.m_slider_label8:setVisible(false);
+		self.m_slider8:setVisible(false);
+		self.m_slider_title8:setVisible(false);
+	end
 end
 
 return UIScene;
