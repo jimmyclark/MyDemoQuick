@@ -237,3 +237,33 @@ function UICreator.createCheckBoxGroup(direction,align,x,y)
 					:align(align,x, y);
 	return group;
 end
+
+--[[
+	@function 	: createUISlider
+	@param		: direction     方向
+				  barImages 	滑块图片
+				  buttonImages  按钮图片
+				  isScale9OrNot 是否缩放
+				  value 		当前值
+				  align 		对齐方式
+				  x,y 		 	x,y坐标
+				  max,min		最大值，最小值
+				  touchInButton 是否只在触摸在滑动块上时才有效，默认为真
+	description : 创建选择框CheckBox组
+	return 		: UISlider滑块
+]]
+function UICreator.createUISlider(direction,barImages,buttonImages,isScale9OrNot,barWidth,barHeight,value,align,x,y,max,min,touchInButton)
+	local images = {
+		bar = barImages.bar,
+		bar_pressed = barImages.bar_pressed,
+		bar_disabled = barImages.bar_disabled,
+		button_pressed = buttonImages.button_pressed,
+		button = buttonImages.button,
+		button_disabled = buttonImages.button_disabled,
+	};
+	local uiSlider = cc.ui.UISlider.new(direction, images, {scale9 = isScale9OrNot,max = max,min = min,touchInButton = touchInButton})
+        :setSliderSize(barWidth, barHeight)
+        :setSliderValue(value)
+        :align(align, x, y);
+    return uiSlider;
+end

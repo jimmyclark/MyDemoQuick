@@ -6,7 +6,7 @@ function UIScene:ctor()
 	local layer = display.newColorLayer(cc.c4b(255,255,255,255));
 	layer:addTo(self);
 
-	self.m_titles = {"UIPageView","UIListView","UIScrollView","UIImage","UIButtons"};
+	self.m_titles = {"UIPageView","UIListView","UIScrollView","UIImage","UIButtons","UISlider"};
 
 	self.m_index = 1;
 
@@ -64,33 +64,44 @@ end
 
 function UIScene:enterNextScene()
 	self.m_index = self.m_index + 1;
-	local index = self.m_index%10;
+	local index = self.m_index;
 	if index == 1 then
 		self:showFirstUI(); 
 		self:hideSecondUI();
 		self:hideThirdUI();
 		self:hideUIImg();
+		self:hideUIButtons();
 	elseif index == 2 then 
 		self:hidePageView();
 		self:showSecondUI();
 		self:hideThirdUI();
 		self:hideUIImg();
+		self:hideUIButtons();
 	elseif index == 3 then 
 		self:hidePageView();
 		self:hideSecondUI();
 		self:showThirdUI();
 		self:hideUIImg();
+		self:hideUIButtons();
 	elseif index == 4 then 
 		self:hidePageView();
 		self:hideSecondUI();
 		self:hideThirdUI();
 		self:showUIImage();
+		self:hideUIButtons();
 	elseif index == 5 then 
 		self:hideUIImg();
 		self:hidePageView();
 		self:hideSecondUI();
 		self:hideThirdUI();
 		self:showUIButtons();
+	elseif index == 6 then
+		self:hideUIImg();
+		self:hidePageView();
+		self:hideSecondUI();
+		self:hideThirdUI();
+		self:hideUIButtons();
+		self:showUISlider();
 	end
 	self.m_title:setString(self.m_titles[index]);
 
@@ -675,7 +686,7 @@ end
 function UIScene:showUIButtons()
 	self:createCheckBox();
 	self:createCheckBox2();
-	
+	self:createCheckBox3();
 end
 
 function UIScene:updateCheckBoxButtonLabel(checkbox)
@@ -692,19 +703,25 @@ function UIScene:updateCheckBoxButtonLabel(checkbox)
 end
 
 function UIScene:createCheckBox()
+	if self.m_uiBtn then 
+		self.m_uiBtn:setVisible(true);
+		self.m_uiBtn2:setVisible(true);
+		return;
+	end
+
 	local label = UICreator.createText("",22,display.CENTER,0,0,255,96,255);
-	self.m_uiBtn_offImages = {
+	local m_uiBtn_offImages = {
 		off = "CheckBoxButtonOff.png",
 	    off_pressed = "CheckBoxButtonOffPressed.png",
 	    off_disabled = "CheckBoxButtonOffDisabled.png",
 	};
-	self.m_uiBtn_onImages = {
+	local m_uiBtn_onImages = {
 		on = "CheckBoxButtonOn.png",
 	    on_pressed = "CheckBoxButtonOnPressed.png",
 	    on_disabled = "CheckBoxButtonOnDisabled.png",
 	};
 
-	self.m_uiBtn = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 40,display.top - 120,label);
+	self.m_uiBtn = UICreator.createUICheckBox(m_uiBtn_offImages,m_uiBtn_onImages,display.LEFT_CENTER,display.left + 40,display.top - 120,label);
 	self.m_uiBtn:setButtonLabelOffset(-50,-40);
 	self.m_uiBtn:onButtonStateChanged(function(event)
 		self:updateCheckBoxButtonLabel(event.target);
@@ -713,7 +730,7 @@ function UIScene:createCheckBox()
     self:updateCheckBoxButtonLabel(self.m_uiBtn);
 
     label = UICreator.createText("",22,display.CENTER,0,0,96,200,96);
-    self.m_uiBtn2 = UICreator.createUICheckBox(self.m_uiBtn_offImages,self.m_uiBtn_onImages,display.LEFT_CENTER,display.left + 260,display.top - 120,label);
+    self.m_uiBtn2 = UICreator.createUICheckBox(m_uiBtn_offImages,m_uiBtn_onImages,display.LEFT_CENTER,display.left + 260,display.top - 120,label);
     self.m_uiBtn2:setButtonLabelOffset(-50, -40);
     self.m_uiBtn2:onButtonStateChanged(function(event)
     	self:updateCheckBoxButtonLabel(event.target);
@@ -756,29 +773,34 @@ function UIScene:createCheckBox()
 end
 
 function UIScene:createCheckBox2()
+	if self.m_checkBoxGroup then 
+		self.m_checkBoxGroup:setVisible(true);
+		self.m_pushBtn2:setVisible(true);
+		return;
+	end
 	self.m_checkBoxGroup = UICreator.createCheckBoxGroup(display.TOP_TO_BOTTOM,display.LEFT_TOP,display.left + 40,display.top - 270);
-	self.m_radios_offImgs = {
+	local m_radios_offImgs = {
 	    off = "RadioButtonOff.png",
 	    off_pressed = "RadioButtonOffPressed.png",
 	    off_disabled = "RadioButtonOffDisabled.png",
 	};
-	self.m_radio_onImgs = {
+	local m_radio_onImgs = {
 		on = "RadioButtonOn.png",
 	    on_pressed = "RadioButtonOnPressed.png",
 	    on_disabled = "RadioButtonOnDisabled.png",
 	};
 
 	local label = UICreator.createText("option 1",20,display.CENTER,0,0,0,0,0);
-	local option1 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label);
+	local option1 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label);
 	option1:setButtonLabelOffset(20, 0);
 	local label2 = UICreator.createText("option 2",20,display.CENTER,0,0,0,0,0);
-	local option2 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label2);
+	local option2 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label2);
 	option2:setButtonLabelOffset(20,0);
 	local label3 = UICreator.createText("option 3",20,display.CENTER,0,0,0,0,0);
-	local option3 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label3);
+	local option3 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label3);
 	option3:setButtonLabelOffset(20, 0);
 	local label4 = UICreator.createText("option 4 disabled",20,display.CENTER,0,0,0,0,0);
-	local option4 = UICreator.createUICheckBox(self.m_radios_offImgs,self.m_radio_onImgs,display.LEFT_CENTER,0,0,label4);
+	local option4 = UICreator.createUICheckBox(m_radios_offImgs,m_radio_onImgs,display.LEFT_CENTER,0,0,label4);
 	option4:setButtonLabelOffset(20, 0);
 	option4:setButtonEnabled(false);
 	self.m_checkBoxGroup:addButton(option1);
@@ -811,9 +833,174 @@ function UIScene:createCheckBox2()
    	self.m_pushBtn2:addTo(self);
 end
 
+function UIScene:createCheckBox3()
+	if self.m_uiBtn3 then 
+		self.m_uiBtn3:setVisible(true);
+		self.m_uiBtn4:setVisible(true);
+		self.m_uiBtn5:setVisible(true);
+		self.m_uiBtn6:setVisible(true);
+		self.m_uiBtn7:setVisible(true);
+		self.m_uiBtn8:setVisible(true);
+		return;
+	end
+	local x = display.left + 80;
+    local y = display.top - 400;
+    local offImages = {
+    	off = "CheckBoxButton2Off.png",
+	};
+	local onImages = {
+    	on = "CheckBoxButton2On.png",
+	};
+	local label = UICreator.createText("checkBox 1",16,display.LEFT_CENTER,0,0,0,0,255);
+	self.m_uiBtn3 = UICreator.createUICheckBox(offImages,onImages,display.LEFT_CENTER,x,y,label);
+	self.m_uiBtn3:setButtonLabelOffset(40, 0);
+    self.m_uiBtn3:addTo(self);
+
+    y = y - 60;
+    label = UICreator.createText("checkbox 2",16,display.LEFT_CENTER,0,0,0,0,255);
+    self.m_uiBtn4 = UICreator.createUICheckBox(offImages,onImages,display.LEFT_CENTER,x,y,label);
+    self.m_uiBtn4:setButtonLabelOffset(40, 0);
+    self.m_uiBtn4:addTo(self);
+
+    y = y - 60;
+    label = UICreator.createText("checkbox 3",16,display.RIGHT_CENTER,0,0,0,0,255);
+    self.m_uiBtn5 = UICreator.createUICheckBox(offImages,onImages,display.RIGHT_CENTER,x,y,label);
+    self.m_uiBtn5:setButtonLabelOffset(40,0);
+    self.m_uiBtn5:addTo(self);
+
+    x = x + 280;
+    label = UICreator.createText("checkbox 4",16,display.CENTER,0,0,0,0,255);
+    self.m_uiBtn6 = UICreator.createUICheckBox(offImages,onImages,display.CENTER,x,y,label);
+    self.m_uiBtn6:setButtonLabelOffset(-40,0);
+    self.m_uiBtn6:addTo(self);
+
+    x = x + 120;
+    label = UICreator.createText("checkbox 5",16,display.CENTER,0,0,0,0,255);
+    self.m_uiBtn7 = UICreator.createUICheckBox(offImages,onImages,display.CENTER,x,y,label);
+    self.m_uiBtn7:setButtonLabelOffset(-40,40);
+    self.m_uiBtn7:addTo(self);
+
+    x = x + 120;
+	label = UICreator.createText("checkbox 6",16,display.CENTER,0,0,0,0,255);
+    self.m_uiBtn8 = UICreator.createUICheckBox(offImages,onImages,display.CENTER,x,y,label);
+    self.m_uiBtn8:setButtonLabelOffset(-40,-40);
+    self.m_uiBtn8:addTo(self);
+end
+
+function UIScene:hideUIButtons()
+	if self.m_uiBtn then 
+		self.m_checkBoxGroup:setVisible(false);
+		self.m_pushBtn:setVisible(false);
+		self.m_pushBtn2:setVisible(false);
+		self.m_uiBtn:setVisible(false);
+		self.m_uiBtn2:setVisible(false);
+		self.m_uiBtn3:setVisible(false);
+		self.m_uiBtn4:setVisible(false);
+		self.m_uiBtn5:setVisible(false);
+		self.m_uiBtn6:setVisible(false);
+		self.m_uiBtn7:setVisible(false);
+		self.m_uiBtn8:setVisible(false);
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------UISlider--------------------------------------------------------------
+function UIScene:showUISlider()
+	self:createUISlider();
+end
+
+function UIScene:createUISlider()
+	local barHeight = 40;
+    local barWidth = 400;
+
+    self.m_slider_label = UICreator.createText("",14,display.LEFT_CENTER,display.left + barWidth + 60,display.top - 60,
+    						0,0,0);
+    self.m_slider_label:addTo(self);
+
+    -- self.m_slider = UICreator.createUISlider(display.LEFT_TO_RIGHT,);
+    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
+    --     :onSliderValueChanged(function(event)
+    --         valueLabel:setString(string.format("value = %0.2f", event.value))
+    --     end)
+    --     :setSliderSize(barWidth, barHeight)
+    --     :setSliderValue(75)
+    --     :align(display.LEFT_BOTTOM, display.left + 40, display.top - 80)
+    --     :addTo(self)
+    -- cc.ui.UILabel.new({text = "align LEFT_BOTTOM", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 30)
+    --     :addTo(self)
 
 
+    -- local barWidth = 280
+    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 140)
+    --     :addTo(self)
+    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
+    --     :onSliderValueChanged(function(event)
+    --         valueLabel:setString(string.format("value = %0.2f", event.value))
+    --     end)
+    --     :setSliderSize(barWidth, barHeight)
+    --     :setSliderValue(75)
+    --     :align(display.CENTER, display.left + barWidth / 2 + 40, display.top - 160 + barHeight / 2)
+    --     :addTo(self)
+    -- cc.ui.UILabel.new({text = "align CENTER", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 110)
+    --     :addTo(self)
 
+
+    -- local barWidth = 340
+    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 220)
+    --     :addTo(self)
+    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
+    --     :onSliderValueChanged(function(event)
+    --         valueLabel:setString(string.format("value = %0.2f", event.value))
+    --     end)
+    --     :setSliderSize(barWidth, barHeight)
+    --     :setSliderValue(75)
+    --     :align(display.RIGHT_TOP, display.left + barWidth + 40, display.top - 180 - barHeight / 2)
+    --     :addTo(self)
+    -- cc.ui.UILabel.new({text = "align RIGHT_TOP", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 190)
+    --     :addTo(self)
+
+
+    -- local barWidth = 360
+    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 300)
+    --     :addTo(self)
+    -- cc.ui.UISlider.new(display.RIGHT_TO_LEFT, TestUISliderScene.SLIDER_IMAGES, {scale9 = true})
+    --     :onSliderValueChanged(function(event)
+    --         valueLabel:setString(string.format("value = %0.2f", event.value))
+    --     end)
+    --     :setSliderSize(barWidth, barHeight)
+    --     :setSliderValue(75)
+    --     :align(display.LEFT_TOP, display.left + 40, display.top - 280)
+    --     :addTo(self)
+    -- cc.ui.UILabel.new({text = "RIGHT_TO_LEFT, align LEFT_TOP", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 270)
+    --     :addTo(self)
+
+
+    -- local barWidth = 240
+    -- local valueLabel = cc.ui.UILabel.new({text = "", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + barWidth + 60, display.top - 380)
+    --     :addTo(self)
+    -- cc.ui.UISlider.new(display.LEFT_TO_RIGHT, {
+    --         bar = "SliderBarFixed.png",
+    --         button = "SliderButton.png",
+    --     })
+    --     :onSliderValueChanged(function(event)
+    --         valueLabel:setString(string.format("value = %0.2f", event.value))
+    --     end)
+    --     :setSliderValue(75)
+    --     :align(display.LEFT_TOP, display.left + 40, display.top - 360)
+    --     :addTo(self)
+    -- cc.ui.UILabel.new({text = "fixed size image, align LEFT_TOP", size = 14, color = display.COLOR_BLACK})
+    --     :align(display.LEFT_CENTER, display.left + 40, display.top - 350)
+    --     :addTo(self)
+end
 
 
 
