@@ -6,7 +6,7 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试","空间A","B","C"};
+	self.m_title = {"2048","ui测试","Edit","B","C"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -35,6 +35,8 @@ function MainScene:ctor()
 				self:enterTo2048();
 			elseif i== 2 then
 				self:enterToUIScene();
+			elseif i == 3 then 
+				self:enterToEditBox();
 			end
 		end)
         item:addChild(m_button);
@@ -53,6 +55,11 @@ end
 function MainScene:enterToUIScene()
 	local sceneUi = require("app.scenes.UIScene").new();
 	display.replaceScene(sceneUi,"fade", 0.6, display.COLOR_WHITE);
+end
+
+function MainScene:enterToEditBox()
+	local sceneEditBox = require("app.scenes.EditScene").new();
+	display.replaceScene(sceneEditBox,"fadeTR",0.6,display.COLOR_WHITE);
 end
 
 function MainScene:onEnter()

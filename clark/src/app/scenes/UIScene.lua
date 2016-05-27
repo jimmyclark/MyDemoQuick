@@ -25,7 +25,7 @@ function UIScene:ctor()
 	self.m_backBtn:addTo(self);
 
 	self.m_backBtn:onButtonClicked(function(event)
-		local mainScene = require("app.scenes.mainScene").new();
+		local mainScene = require("app.scenes.MainScene").new();
 		display.replaceScene(mainScene,"crossFade", 0.6, display.COLOR_WHITE);
 	end);
 end

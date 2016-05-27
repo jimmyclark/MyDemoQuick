@@ -69,7 +69,7 @@ function SceneTOFE:initScene()
 	self.m_backBtn:addTo(self);
 
 	self.m_backBtn:onButtonClicked(function(event)
-		local mainScene = require("app.scenes.mainScene").new();
+		local mainScene = require("app.scenes.MainScene").new();
 		display.replaceScene(mainScene,"fadeDown", 0.6, display.COLOR_WHITE);
 	end);
 
