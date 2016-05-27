@@ -56,3 +56,4 @@ UIConfig.SCROLLVIEW.VERTICAL = 1;
 -- 水平
 UIConfig.SCROLLVIEW.HORIZONTAL = 2;
 
+-------------------------------------------------------------------------------------------

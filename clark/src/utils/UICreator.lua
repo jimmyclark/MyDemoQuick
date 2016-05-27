@@ -267,3 +267,49 @@ function UICreator.createUISlider(direction,barImages,buttonImages,isScale9OrNot
         :align(align, x, y);
     return uiSlider;
 end
+
+--[[
+	@function 	: createEditBox
+	@param		: inputType     	1或nil 表示创建editbox输入控件
+				  					2 表示创建textfield输入控件
+				  imageName 		输入框的图像，可以是图像名或者是 Sprite9Scale 显示对象。
+				  imagePressedName  输入状态时输入框显示的图像（可选）
+				  imageDisabledName 禁止状态时输入框显示的图像（可选）
+				  x,y 		 		x,y坐标（可选)
+				  width 			输入框宽度
+				  height 			输入框高度
+				  listener 			回调函数
+				  placeHolder		占位符(可选)
+				  text 				输入文字(可选)
+				  font 				字体
+				  fontSize 			字体大小
+				  maxLength 		最大长度
+				  passwordEnable	开启密码模式
+				  passwordChar 		密码代替字符
+	description : 创建输入框EditBox
+	return 		: UIInput 输入框
+]]
+function UICreator.createEditBox(inputType,imageName,imagePressedName,imageDisabledName,x,y,width,height,listener,
+						placeHolder,text,font,fontSize,maxLength,passwordEnable,passwordChar)
+	local input = cc.ui.UIInput.new({
+		image = imageName,
+		imagePressed = imagePressedName,
+		imageDisabled = imageDisabledName,
+        size = cc.size(width, height),
+        x = x,
+        y = y,
+        listener = listener,
+        maxLength = maxLength,
+        UIInputType = inputType,
+        text = text,
+        font = font,
+        fontSize = fontSize,
+        passwordEnable = passwordEnable or false,
+        passwordChar = passwordChar or "",
+	});
+	-- input:setReturnType(inputType);
+	input:setPlaceHolder(placeHolder);
+	-- input:setMaxLength(5);
+	-- input:setFontSize(fontSize);
+	return input;
+end
