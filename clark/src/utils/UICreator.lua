@@ -79,8 +79,13 @@ end
 	return 		: 按钮
 ]]
 function UICreator.createBtnText(imageName,isScale9OrNot,x,y,align,width,height,label)
+
 	local button;
-	button = cc.ui.UIPushButton.new(imageName, {scale9 = isScale9OrNot or false})
+	if imageName then 
+		button = cc.ui.UIPushButton.new(imageName, {scale9 = isScale9OrNot or false})
+	else
+		button = cc.ui.UIPushButton.new();
+	end
 	if width and height then
     	button:setButtonSize(width, height);
 	end
@@ -312,4 +317,27 @@ function UICreator.createEditBox(inputType,imageName,imagePressedName,imageDisab
 	-- input:setMaxLength(5);
 	-- input:setFontSize(fontSize);
 	return input;
+end
+
+--[[
+	@function 	: createBoundingBox
+	@param		: parent 在谁的上面画
+				  target 子控件是谁，在谁的外面画
+				  color cc.c4f 颜色
+	description : 创建某个控件的外部边框
+	@return 	: 边框
+]]
+function UICreator.createBoundingBox(parent, target, color)
+    local cbb = target:getCascadeBoundingBox();
+    local left, bottom, width, height = cbb.origin.x, cbb.origin.y, cbb.size.width, cbb.size.height;
+    local points = {
+        {left, bottom},
+        {left + width, bottom},
+        {left + width, bottom + height},
+        {left, bottom + height},
+        {left, bottom},
+    };
+    local box = display.newPolygon(points, {borderColor = color});
+    parent:addChild(box, 1000);
+    return box;
 end
