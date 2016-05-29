@@ -6,7 +6,7 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试","Edit","WebSocket","touch"};
+	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -41,6 +41,8 @@ function MainScene:ctor()
 				self:enterToWebSocketView();
 			elseif i == 5 then
 				self:enterToTouchView();
+			elseif i == 6 then 
+				self:enterToTestView();
 			end
 		end)
         item:addChild(m_button);
@@ -74,6 +76,11 @@ end
 function MainScene:enterToTouchView()
 	local sceneToTouch = require("app.scenes.TouchScene").new();
 	display.replaceScene(sceneToTouch,"flipX",0.2,cc.TRANSITION_ORIENTATION_LEFT_OVER);
+end
+
+function MainScene:enterToTestView()
+	local sceneToTest = require("app.scenes.TestScene").new();
+	display.replaceScene(sceneToTest,"zoomFlipAngular",0.2,cc.TRANSITION_ORIENTATION_LEFT_OVER);
 end
 
 function MainScene:onEnter()
