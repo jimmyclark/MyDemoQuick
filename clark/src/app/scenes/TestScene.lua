@@ -352,12 +352,10 @@ function TestScene:createDisplayTest()
         print("display.addImageAsync(\"Coin0001.png\")");
         display.addImageAsync("Coin0001.png", function(event, texture)
             printf("display.addImageAsync(\"Coin0001.png\") - event = %s, texture = %s", tostring(event), tostring(texture));
-            self.m_coin = UICreator.createImg("Coin0001.png",true, display.left + 100, display.cy);
+            self.m_coin = UICreator.createImg("Coin0001.png",true, display.left + 100, display.cy,96,96);
             self.m_coin:addTo(self);        
         end);
     end);
-
-
 end
 
 
