@@ -69,6 +69,8 @@ function TestScene:ctor()
 				self:createHelperTest();
 			elseif i == 2 then 
 				self:createNativeTest();
+            elseif i == 3 then 
+                self:createDisplayTest();
 			end            	
         end);
 
@@ -149,6 +151,17 @@ end
 
 function TestScene:createNativeTest()
 	self.m_ReturnButton:setVisible(true);
+    if self.m_title2 then 
+        self.m_title2:setVisible(true);
+        self.m_native_indicator:setVisible(true);
+        self.m_native_alertBtn:setVisible(true);
+        self.m_native_openBrowser:setVisible(true);
+        self.m_native_callPhone:setVisible(true);
+        self.m_native_sendEmail:setVisible(true);
+        self.m_native_getInput:setVisible(true);
+        self.m_native_viberate:setVisible(true);
+        return ;
+    end
 
 	local param_distance = 50;
 
@@ -297,8 +310,6 @@ function TestScene:createNativeTest()
     	-- 增加主题和内容
 	    cc.Native:vibrate();
     end); 
-
-
 end
 
 function TestScene:hideNativeTest()
@@ -313,6 +324,40 @@ function TestScene:hideNativeTest()
 		self.m_native_getInput:setVisible(false);
 		self.m_native_viberate:setVisible(false);
 	end
+end
+
+function TestScene:createDisplayTest()
+    self.m_ReturnButton:setVisible(true);
+
+    local param_distance = 50;
+
+    local y = display.top - 150;
+
+    self.m_title3 = UICreator.createText("DisplayTest",35,display.CENTER,display.cx,display.top - 80,255,255,255);
+    self.m_title3:addTo(self);
+
+    local label = UICreator.createText("addImageAsync -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_native_addImageAsync = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_native_addImageAsync:addTo(self);
+
+    self.m_native_addImageAsync:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_native_addImageAsync:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_native_addImageAsync:onButtonClicked(function(event)
+        print("display.removeSpriteFrameByImageName(\"Coin0001.png\")");
+        display.removeSpriteFrameByImageName("Coin0001.png");
+        print("display.addImageAsync(\"Coin0001.png\")");
+        display.addImageAsync("Coin0001.png", function(event, texture)
+            printf("display.addImageAsync(\"Coin0001.png\") - event = %s, texture = %s", tostring(event), tostring(texture));
+            self.m_coin = UICreator.createImg("Coin0001.png",true, display.left + 100, display.cy);
+            self.m_coin:addTo(self);        
+        end);
+    end);
+
+
 end
 
 
