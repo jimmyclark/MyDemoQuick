@@ -76,6 +76,7 @@ function TestScene:ctor()
             elseif i == 4 then 
                 self:createCrypToTest();
             elseif i == 5 then
+                self:createNetworkTest();
 			end            	
         end);
 
@@ -111,6 +112,7 @@ function TestScene:showMainView()
 	self:hideNativeTest();
     self:hideDisplayTest();
     self:hideCrypToTest();
+    self:hideNetworkTest();
 end
 
 function TestScene:run()
@@ -768,6 +770,212 @@ function TestScene:bin2hex(bin)
         t[#t + 1] = string.format("%02x", c);
     end
     return table.concat(t, " ");
+end
+
+function TestScene:createNetworkTest()
+     self.m_ReturnButton:setVisible(true);
+
+    local param_distance = 50;
+
+    local y = display.top - 150;
+
+    self.m_title5 = UICreator.createText("NetworkTest",35,display.CENTER,display.cx,display.top - 80,255,255,255);
+    self.m_title5:addTo(self);
+
+    self.requestCount = 0;
+
+    local label = UICreator.createText("createHTTPRequest -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_network_createHTTPRequest = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_network_createHTTPRequest:addTo(self);
+
+    self.m_network_createHTTPRequest:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_network_createHTTPRequest:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_network_createHTTPRequest:onButtonClicked(function(event)
+        local url = "http://baidu.com";
+        self.requestCount = self.requestCount + 1;
+        local index = self.requestCount;
+        local request = network.createHTTPRequest(function(event)
+            if tolua.isnull(self) then
+                printf("REQUEST %d COMPLETED, BUT SCENE HAS QUIT", index);
+                return
+            end
+            self:onResponse(event, index);
+        end, url, "GET");
+        printf("REQUEST START %d", index);
+        request:start();
+    end);
+
+    y = y - param_distance;
+
+    local label = UICreator.createText("createHTTPRequestBadDomain -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_network_createHTTPRequestBadDomain = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_network_createHTTPRequestBadDomain:addTo(self);
+
+    self.m_network_createHTTPRequestBadDomain:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_network_createHTTPRequestBadDomain:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_network_createHTTPRequestBadDomain:onButtonClicked(function(event)
+        self.requestCount = self.requestCount + 1;
+        local index = self.requestCount;
+        local request = network.createHTTPRequest(function(event)
+            if tolua.isnull(self) then
+                printf("REQUEST %d COMPLETED, BUT SCENE HAS QUIT", index);
+                return;
+            end
+            self:onResponse(event, index);
+        end, "http://quick-x.com.x.y.z.not/", "GET");
+        printf("REQUEST START %d", index);
+        request:start();
+    end);
+
+    y = y - param_distance;
+
+    local label = UICreator.createText("send data to server -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_network_sendData = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_network_sendData:addTo(self);
+
+    self.m_network_sendData:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_network_sendData:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_network_sendData:onButtonClicked(function(event)
+        print("send data to server");
+        self.requestCount = self.requestCount + 1;
+        local index = self.requestCount;
+        local request = network.createHTTPRequest(function(event)
+            if tolua.isnull(self) then
+                printf("REQUEST %d COMPLETED, BUT SCENE HAS QUIT", index);
+                return;
+            end
+            self:onResponse(event, index, true);
+
+            if event.name == "completed" then
+                local cookie = network.parseCookie(event.request:getCookieString());
+                dump(cookie, "GET COOKIE FROM SERVER");
+            end
+        end, "http://quick-x.com/tests/http_request_tests.php", "POST");
+        request:addPOSTValue("username", "dualface");
+        request:setCookieString(network.makeCookieString({C1 = "V1", C2 = "V2"}));
+        printf("REQUEST START %d", index);
+        request:start();
+    end);
+
+    y = y - param_distance;
+
+    local label = UICreator.createText("isLocalWiFiAvailable -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_network_wifiAvailable = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_network_wifiAvailable:addTo(self);
+
+    self.m_network_wifiAvailable:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_network_wifiAvailable:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_network_wifiAvailable:onButtonClicked(function(event)
+       print("Is local wifi avaibable: ", network.isLocalWiFiAvailable());
+    end);
+
+    y = y - param_distance;
+
+    local label = UICreator.createText("isInternetConnectionAvailable -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_network_internetConnectionAvailable = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_network_internetConnectionAvailable:addTo(self);
+
+    self.m_network_internetConnectionAvailable:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_network_internetConnectionAvailable:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_network_internetConnectionAvailable:onButtonClicked(function(event)
+       print("Is internet connection avaibable: ", network.isInternetConnectionAvailable());
+    end);
+
+    y = y - param_distance;
+
+    local label = UICreator.createText("isHostNameReachable -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_network_internetHostNameReachable = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_network_internetHostNameReachable:addTo(self);
+
+    self.m_network_internetHostNameReachable:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_network_internetHostNameReachable:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_network_internetHostNameReachable:onButtonClicked(function(event)
+       print("Is www.cocos2d-x.org reachable: ", network.isHostNameReachable("www.cocos2d-x.org"));
+    end);
+
+    y = y - param_distance;
+
+    local label = UICreator.createText("getInternetConnectionStatus -- check console output",24,display.CENTER,display.cx,display.top - 100,255,255,0);
+    self.m_network_getNetConnection = UICreator.createBtnText(nil,false,display.cx,y,display.CENTER,155,60,label);
+    self.m_network_getNetConnection:addTo(self);
+
+    self.m_network_getNetConnection:onButtonPressed(function(event)
+        event.target:setOpacity(128);
+        end);
+    self.m_network_getNetConnection:onButtonRelease(function(event)
+        event.target:setOpacity(255);
+    end);
+    self.m_network_getNetConnection:onButtonClicked(function(event)
+        local status = {
+            [cc.kCCNetworkStatusNotReachable]     = "无法访问互联网",
+            [cc.kCCNetworkStatusReachableViaWiFi] = "通过 WIFI",
+            [cc.kCCNetworkStatusReachableViaWWAN] = "通过 3G 网络",
+        }
+
+        printf("Internet Connection Status: %s", status[network.getInternetConnectionStatus()]);
+    end);
+
+end
+
+function TestScene:hideNetworkTest()
+    if self.m_title5 then 
+        self.m_title5:setVisible(true);
+        self.m_network_createHTTPRequest:setVisible(false);
+        self.m_network_createHTTPRequestBadDomain:setVisible(false);
+        self.m_network_sendData:setVisible(false);
+        self.m_network_wifiAvailable:setVisible(false);
+        self.m_network_internetConnectionAvailable:setVisible(false);
+        self.m_network_internetHostNameReachable:setVisible(false);
+        self.m_network_getNetConnection:setVisible(false);
+    end
+end
+
+function TestScene:onResponse(event, index, dumpResponse)
+    local request = event.request;
+    printf("REQUEST %d - event.name = %s", index, event.name);
+    if event.name == "completed" then
+        printf("REQUEST %d - getResponseStatusCode() = %d", index, request:getResponseStatusCode());
+        -- printf("REQUEST %d - getResponseHeadersString() =\n%s", index, request:getResponseHeadersString())
+
+        if request:getResponseStatusCode() ~= 200 then
+        else
+            printf("REQUEST %d - getResponseDataLength() = %d", index, request:getResponseDataLength());
+            print("dump:" .. tostring(dumpResponse));
+            if dumpResponse then
+                printf("REQUEST %d - getResponseString() =\n%s", index, request:getResponseString());
+            end
+        end
+    elseif event.name ~= "progress" then
+        -- printf("REQUEST %d - getErrorCode() = %d, getErrorMessage() = %s", index, request:getErrorCode(), request:getErrorMessage())
+        print("ErrorCode:" .. tostring(request:getErrorCode()));
+        print("ErrowMsg:" .. tostring(request:getErrorMessage()));
+    end
+
+    print("----------------------------------------");
 end
 
 return TestScene;
