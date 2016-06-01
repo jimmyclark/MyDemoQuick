@@ -6,7 +6,7 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D"};
+	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -47,6 +47,10 @@ function MainScene:ctor()
 				self:enterToStateMachineView();
 			elseif i == 8 then
 				self:enterToSprite3DView();
+			elseif i == 9 then 
+				self:enterToPhysicalView();
+			elseif i == 10 then 
+				self:enterToMVCView();
 			end
 		end)
         item:addChild(m_button);
@@ -54,7 +58,7 @@ function MainScene:ctor()
 
 
     end
-    self.m_btnGroup:reload()
+    self.m_btnGroup:reload();
 end
 
 function MainScene:enterTo2048()
@@ -94,7 +98,17 @@ end
 
 function MainScene:enterToSprite3DView()
 	local sceneToSprite3D = require("app.scenes.Sprite3DScene").new();
-	display.replaceScene(sceneToSprite3D,"moveInB",0.2);
+	display.replaceScene(sceneToSprite3D,"moveInL",0.2);
+end
+
+function MainScene:enterToPhysicalView()
+	local sceneToPhysical = require("app.scenes.PhysicalScene").new();
+	display.replaceScene(sceneToPhysical,"moveInT",0.2);
+end
+
+function MainScene:enterToMVCView()
+	local sceneToMVC = require("app.scenes.MVCScene").new();
+	display.replaceScene(sceneToMVC,"pageTurn",0.4,false);
 end
 
 function MainScene:onEnter()
