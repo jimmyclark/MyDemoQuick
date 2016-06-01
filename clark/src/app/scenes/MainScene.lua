@@ -6,7 +6,7 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State"};
+	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -45,6 +45,8 @@ function MainScene:ctor()
 				self:enterToTestView();
 			elseif i == 7 then 
 				self:enterToStateMachineView();
+			elseif i == 8 then
+				self:enterToSprite3DView();
 			end
 		end)
         item:addChild(m_button);
@@ -88,6 +90,11 @@ end
 function MainScene:enterToStateMachineView()
 	local sceneToStateMachine = require("app.scenes.StateMachineScene").new();
 	display.replaceScene(sceneToStateMachine,"moveInB",0.2);
+end
+
+function MainScene:enterToSprite3DView()
+	local sceneToSprite3D = require("app.scenes.Sprite3DScene").new();
+	display.replaceScene(sceneToSprite3D,"moveInB",0.2);
 end
 
 function MainScene:onEnter()
