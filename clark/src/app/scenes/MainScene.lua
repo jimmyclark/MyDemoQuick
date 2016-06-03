@@ -6,7 +6,7 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc"};
+	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc","filter"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -51,6 +51,8 @@ function MainScene:ctor()
 				self:enterToPhysicalView();
 			elseif i == 10 then 
 				self:enterToMVCView();
+			elseif i == 11 then
+				self:enterToFilterView();
 			end
 		end)
         item:addChild(m_button);
@@ -109,6 +111,11 @@ end
 function MainScene:enterToMVCView()
 	local sceneToMVC = require("app.scenes.MVCScene").new();
 	display.replaceScene(sceneToMVC,"pageTurn",0.4,false);
+end
+
+function MainScene:enterToFilterView()
+	local sceneToFilter = require("app.scenes.FilterScene").new();
+	display.replaceScene(sceneToFilter,"rotoZoom",0.4,false);
 end
 
 function MainScene:onEnter()

@@ -5,16 +5,18 @@ local MVCController = class("MVCController", function()
 end)
 
 function MVCController:ctor()
-    if not app:isObjectExists("player") then
+    self.m_object = {};
+    display.addSpriteFrames(GAME_TEXTURE_DATA_FILENAME3, GAME_TEXTURE_IMAGE_FILENAME3);
+    if not self:isObjectExists("player") then
         -- player 对象只有一个，不需要每次进入场景都创建
         local player = Hero.new({
             id = "player",
             nickname = "clarkwu",
             level = 1,
         });
-        app:setObject("player", player);
+        self:setObject("player", player);
     end
-    self.player = app:getObject("player");
+    self.player = self:getObject("player");
 
     self.enemy = Hero.new({
         id = "enemy",
@@ -25,11 +27,11 @@ function MVCController:ctor()
     self.views_ = {};
     self.bullets_ = {};
 
-    self.views_[self.player] = app:createView("HeroView", self.player)
+    self.views_[self.player] = require("app.scenes.HeroView").new(self.player)
         :pos(display.cx - 300, display.cy)
         :addTo(self);
 
-    self.views_[self.enemy] = app:createView("HeroView", self.enemy)
+    self.views_[self.enemy] = require("app.scenes.HeroView").new(self.enemy)
         :pos(display.cx + 300, display.cy)
         :flipX(true)
         :addTo(self);
@@ -156,6 +158,20 @@ function MVCController:tick(dt)
             end
         end
     end
+end
+
+function MVCController:setObject(id, object)
+    assert(self.m_object[id] == nil, string.format("MVCController:setObject() - id \"%s\" already exists", id));
+    self.m_object[id] = object;
+end
+
+function MVCController:getObject(id)
+    assert(self.m_object[id] ~= nil, string.format("MVCController:getObject() - id \"%s\" not exists", id));
+    return self.m_object[id];
+end
+
+function MVCController:isObjectExists(id)
+    return self.m_object[id] ~= nil;
 end
 
 return MVCController;
