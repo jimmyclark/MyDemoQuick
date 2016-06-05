@@ -6,7 +6,7 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc","filter"};
+	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc","filter","drag"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -53,6 +53,8 @@ function MainScene:ctor()
 				self:enterToMVCView();
 			elseif i == 11 then
 				self:enterToFilterView();
+			elseif i == 12 then 
+				self:enterToDragView();
 			end
 		end)
         item:addChild(m_button);
@@ -116,6 +118,11 @@ end
 function MainScene:enterToFilterView()
 	local sceneToFilter = require("app.scenes.FilterScene").new();
 	display.replaceScene(sceneToFilter,"rotoZoom",0.4,false);
+end
+
+function MainScene:enterToDragView()
+	local sceneToDrag = require("app.scenes.DragScene").new();
+	display.replaceScene(sceneToDrag,"slideInB",0.4,false);
 end
 
 function MainScene:onEnter()

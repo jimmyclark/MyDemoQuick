@@ -76,8 +76,8 @@ function FilterScene:ctor()
 	self._FILTERS[1][2] = par;
 
 	self:addUI();
-	self:_createFilters();
-	-- self:_showFilter()
+	self:createFilters();
+	self:showFilter();
 end
 
 function FilterScene:addUI()
@@ -163,11 +163,11 @@ end
 
 
 function FilterScene:onPrev()
-	self._curFilter = self._curFilter - 1;
-	if self._curFilter <= 0 then
-		self._curFilter = self._filterCount
+	self.m_curFilter = self.m_curFilter - 1;
+	if self.m_curFilter <= 0 then
+		self.m_curFilter = self._filterCount;
 	end
-	self:_showFilter()
+	self:showFilter();
 end
 
 function FilterScene:onReset()
@@ -175,16 +175,54 @@ function FilterScene:onReset()
 end
 
 function FilterScene:onNext()
-	self._curFilter = self._curFilter + 1;
-	if self._curFilter > self._filterCount then
-		self._curFilter = 1
+	self.m_curFilter = self.m_curFilter + 1;
+	if self.m_curFilter > self._filterCount then
+		self.m_curFilter = 1;
 	end
-	self:_showFilter()
+	self:showFilter();
 end
 
 function FilterScene:createFilters()
 	self.m_curFilter = 1;
 	self._filterCount = #self._FILTERS;
+end
+
+
+function FilterScene:showFilter()
+	if self.m_filterSprite then
+		self.m_filterSprite:removeSelf();
+		self.m_filterSprite = nil;
+	end
+	local __curFilter = FilterScene._FILTERS[self.m_curFilter];
+	-- self._filterSprite = display.newFilteredSprite("helloworld.png", unpack(__curFilter))
+	local __filters, __params = unpack(__curFilter);
+	if __params and #__params == 0 then
+		__params = nil;
+	end
+	self.m_filterSprite = display.newFilteredSprite("helloworld.png", __filters, __params)
+		:align(display.CENTER, display.cx, display.cy)
+		:addTo(self, 10);
+	-- self._filterSprite:setAnchorPoint(cc.p(1, 1))
+	-- self._filterSprite:setPosition(display.cx, display.cy)
+
+        local __title = "";
+        if type(__filters) == "table" then
+			for i in ipairs(__filters) do
+				__title = __title..__filters[i];
+				local __param = __params[i];
+				if "table" == type(__param) then
+					__title = __title.." (" .. table.concat(__param, ",")..")\n";
+				else
+					__title = __title.." (nil)\n";
+				end
+			end
+        else
+            __title = __filters;
+			if __params and type(__params) == "table" then
+				__title = __title.. " (" .. table.concat(__params, ",")..")";
+			end
+        end
+        self.m_title:setString(__title);
 end
 
 function FilterScene:onExit()
