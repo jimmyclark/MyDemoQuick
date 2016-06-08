@@ -6,6 +6,8 @@ local c4 = cc.c3b(100,100,100);
 local boxSize = cc.size(90,90);
 local objSize = cc.size(80,80);
 
+require("app.logic.Utilities")
+
 local DragScene = class("DragScene",function()
 	return display.newScene("DragScene");
 end);
@@ -36,7 +38,7 @@ function DragScene:ctor()
     self.m_indexMax = 3;
     --加载ui
     self:initUI();
-    -- self:_addUI()
+    self:addUI();
     --加载拖拽1
     -- self:loadDrag1()
 
@@ -123,6 +125,85 @@ function DragScene:slide(event)
     end
 end
 
-S_XY = function(node,x,y) if not node then return nil end  node:setPosition(x,y); end
+function DragScene:addUI()
+	self.m_closeBtn = UICreator.createBtnText("drag/close.png",true,display.width,display.bottom,display.RIGHT_BOTTOM,32,32);
+ 	self.m_closeBtn:addTo(self, 0);
+    self.m_closeBtn:onButtonClicked(function()
+		os.exit();
+	end);
+
+	local image = {
+		normal = "b1.png",
+		pressed = "b2.png"
+	};
+
+	self.m_prevBtn = UICreator.createBtnText(image,true,display.cx-100,display.bottom,display.BOTTOM_CENTER,79,46);
+	self.m_prevBtn:addTo(self,0);
+
+    self.m_prevBtn:onButtonClicked(function() 
+            self.m_index = self.m_index-1  
+            if self.m_index < 0 then 
+            	self.m_index = self.m_indexMax;
+            end
+            self:changeLayer() ;
+    end);
+
+    image = {
+		normal = "r1.png",
+		pressed = "r2.png"
+	};
+
+	self.m_resetBtn = UICreator.createBtnText(image,true,display.cx, display.bottom,display.BOTTOM_CENTER,79,46);
+	self.m_resetBtn:addTo(self,0);
+
+    self.m_resetBtn:onButtonClicked(function() 
+         self:changeLayer() ;
+    end);
+
+    mage = {
+		normal = "f1.png",
+		pressed = "f2.png"
+	};
+
+	self.m_nextBtn = UICreator.createBtnText(image,true,display.cx+100, display.bottom,display.BOTTOM_CENTER,79,46);
+	self.m_nextBtn:addTo(self,0);
+
+    self.m_nextBtn:onButtonClicked(function() 
+         self.m_index = self.m_index+1;  
+            if self.m_index > self.m_indexMax then 
+            	self.m_index = 0;
+			end
+            self:changeLayer();
+    end);
+
+    self.m_nextBtn:onButtonClicked(function() 
+        self.m_index = self.m_index+1  ;
+        if self.m_index > self.m_indexMax then 
+           self.m_index = 0 ;
+        end
+        self:changeLayer() ;
+	end);
+
+	self.m_title = UICreator.createText("Filters test",22,display.CENTER,display.cx,display.top-40,255,255,255);
+	self.m_title:addTo(self,10);
+end
+
+function DragScene:changeLayer()
+    if self._index == 0 then
+        self:loadDrag1();
+    elseif self._index == 1 then
+        self:loadDrag2();
+    elseif self._index == 2 then
+        self:loadDrag3();
+    elseif self._index == 3 then
+        self:loadDrag4();
+--    
+--    elseif self._index == 0 then
+--    
+--    elseif self._index == 0 then
+--    
+    end
+    
+end
 
 return DragScene;
