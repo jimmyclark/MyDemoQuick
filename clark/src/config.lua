@@ -32,3 +32,6 @@ GAME_TEXTURE_IMAGE_FILENAME2 = "AllSprites2.png";
 
 GAME_TEXTURE_DATA_FILENAME3  = "AllSprites3.plist";
 GAME_TEXTURE_IMAGE_FILENAME3 = "AllSprites3.png";
+
+GAME_TEXTURE_DATA_FILENAME4  = "benchmark/AllSprites.plist";
+GAME_TEXTURE_IMAGE_FILENAME4 = "benchmark/AllSprites.png";

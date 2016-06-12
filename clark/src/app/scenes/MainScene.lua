@@ -6,7 +6,8 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc","filter","drag"};
+	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc","filter","drag","ccsLoader",
+	"byteArray","benchmark","armature"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -55,6 +56,14 @@ function MainScene:ctor()
 				self:enterToFilterView();
 			elseif i == 12 then 
 				self:enterToDragView();
+			elseif i == 13 then 
+				self:enterToCCSLoaderView();
+			elseif i == 14 then
+				self:enterByteArrayView();
+			elseif i == 15 then
+				self:enterToBenchMarkView();
+			elseif i == 16 then 
+				self:enterToAmatureView();
 			end
 		end)
         item:addChild(m_button);
@@ -123,6 +132,26 @@ end
 function MainScene:enterToDragView()
 	local sceneToDrag = require("app.scenes.DragScene").new();
 	display.replaceScene(sceneToDrag,"slideInB",0.4,false);
+end
+
+function MainScene:enterToCCSLoaderView()
+	local sceneToDrag = require("app.scenes.CCSLoaderScene").new();
+	display.replaceScene(sceneToDrag,"splitCols",0.4,false);
+end
+
+function MainScene:enterByteArrayView()
+	local sceneToDrag = require("app.scenes.ByteArrayScene").new();
+	display.replaceScene(sceneToDrag,"turnOffTiles",0.4,false);
+end
+
+function MainScene:enterToBenchMarkView()
+	local sceneToBenchMark = require("app.scenes.BenchMark").new();
+	display.replaceScene(sceneToBenchMark,"turnOffTiles",0.4,false);
+end
+
+function MainScene:enterToAmatureView()
+	local sceneToAmature = require("app.scenes.AmatureScene").new();
+	display.replaceScene(sceneToAmature);
 end
 
 function MainScene:onEnter()
