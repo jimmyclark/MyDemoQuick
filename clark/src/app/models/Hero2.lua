@@ -15,7 +15,7 @@ function Hero2:changeMount(armature)
         self._mount:getBone("hero"):removeDisplay(0);
         self._mount:stopAllActions();
         self:setPosition(self._mount:getPosition());
-        self._layer:addChild(self);
+        self.m_layer:addChild(self);
         self:release();
         self._mount = armature;
     else

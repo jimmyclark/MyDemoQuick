@@ -15,11 +15,12 @@ UICreator = {};
 	description :  创建普通文本
 	return 		:  UILabel对象
 ]]
-function UICreator.createText(text,size,align,x,y,r,g,b)
+function UICreator.createText(text,size,align,x,y,r,g,b,fontName)
 	local text = cc.ui.UILabel.new({
             UILabelType = UIConfig.LABEL.TTF_FONT,
             text = text, 
             size = size,
+            font = fontName,
             color = cc.c3b(r,g,b)
             })
         :align(align,x, y);

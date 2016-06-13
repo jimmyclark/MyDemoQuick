@@ -7,7 +7,7 @@ end)
 
 function MainScene:ctor()
 	self.m_title = {"2048","ui测试","Edit","WebSocket","touch","test","State","Sprite3D","physics","mvc","filter","drag","ccsLoader",
-	"byteArray","benchmark","armature"};
+	"byteArray","benchmark","armature","nightclub","towfence","coinflip"};
 
     -- self.m_text = UICreator.createText(self.m_title[2],40,display.CENTER,display.cx,display.cy,255,0,0,"Marker Felt");
     -- self.m_text:addTo(self);
@@ -64,6 +64,10 @@ function MainScene:ctor()
 				self:enterToBenchMarkView();
 			elseif i == 16 then 
 				self:enterToAmatureView();
+			elseif i == 17 then 
+				self:enterToNightClubView();
+			elseif i == 18 then 
+				self:enterToTowerDefenceView();
 			end
 		end)
         item:addChild(m_button);
@@ -152,6 +156,16 @@ end
 function MainScene:enterToAmatureView()
 	local sceneToAmature = require("app.scenes.AmatureScene").new();
 	display.replaceScene(sceneToAmature);
+end
+
+function MainScene:enterToNightClubView()
+	local sceneToNightClub = require("app.scenes.NightClubScene").new();
+	display.replaceScene(sceneToNightClub);
+end
+
+function MainScene:enterToTowerDefenceView()
+	local sceneToTowerDefence = require("app.scenes.TowerDefenceScene").new();
+	display.replaceScene(sceneToTowerDefence);
 end
 
 function MainScene:onEnter()

@@ -7,7 +7,7 @@ local Hero = require("app.models.Hero2");
 
 function AmatureScene:ctor()
 	self.m_backBtn = UICreator.createBtnText("close.png",true,display.left + 100,display.top - 100,display.CENTER);
-	self.m_backBtn:addTo(self);
+	self.m_backBtn:addTo(self,10);
 
 	self.m_backBtn:onButtonPressed(function(event)
 		event.target:setOpacity(128);
@@ -32,7 +32,7 @@ function AmatureScene:ctor()
     self.m_titles = {"TestAsynchronousLoading","TestDirectLoading","TestCSWithSkeleton","TestDragonBones20","TestPerformance",
     "TestChangeZorder","TestAnimationEvent","TestFrameEvent","TestParticleDisplay","TestUseMutiplePicture","TestAnchorPoint",
     "TestArmatureNesting","TestArmatureNesting2"};
-    self.m_index = 12;
+    self.m_index = 2;
 
     self.m_title = UICreator.createText(self.m_titles[self.m_index],18,display.CENTER,display.cx,display.top-50,0,0,0,"armature/fonts/arial.ttf");
     self.m_title:addTo(self);
@@ -130,6 +130,9 @@ end
 
 function AmatureScene:onPrev()
 	self.m_index = self.m_index - 1;
+	if self.m_index == 1 then 
+		self.m_index = 12;
+	end
 	self:showMyArmatureScene();
 end
 
@@ -507,6 +510,11 @@ function AmatureScene:showSeventhAmature()
 	self.m_subTitle:setVisible(false);
 	self.m_title:setString(self.m_titles[self.m_index]);
 
+	if self.m_armature9 then
+		self.m_armature9:setVisible(true);
+		return;
+	end
+
 	local gridNode = cc.NodeGrid:create();
     local function checkAction(dt)
         if gridNode:getNumberOfRunningActions() == 0 and gridNode:getGrid() ~= nil then
@@ -514,11 +522,6 @@ function AmatureScene:showSeventhAmature()
         end
     end
 
-	if self.m_armature9 then
-		self.m_armature9:setVisible(true);
-		scheduler.scheduleUpdateGlobal(checkAction);
-		return;
-	end
 
 	self.m_armature9 = ccs.Armature:create("HeroAnimation");
     self.m_armature9 :getAnimation():play("attack");
@@ -548,7 +551,6 @@ end
 function AmatureScene:hideSeventhAmature()
 	if self.m_armature9 then
 		self.m_armature9:setVisible(false);
-		scheduler.unscheduleGlobal(self.handle2);
 	end
 end
 
@@ -782,9 +784,9 @@ function AmatureScene:showTwelvthAmature()
         armature:runAction(cc.Sequence:create(move));
     end
 
-    self.m_hero:setTouchEnabled(true);
+    self:setTouchEnabled(true);
 
-    self.m_hero:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+    self:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
     	if event.name=='began' then
     		return true;
     	elseif event.name=='ended' then
@@ -798,26 +800,28 @@ function AmatureScene:showTwelvthAmature()
         if nil ~= self.m_hero._mount then
             self.m_hero:changeMount(nil);
         else
-            if cc.pGetDistance(cc.p(self.m_hero:getPosition()),cc.p(self._horse:getPosition())) < 20 then
+            if cc.pGetDistance(cc.p(self.m_hero:getPosition()),cc.p(self.m_horse:getPosition())) < 20 then
                 self.m_hero:changeMount(self.m_horse);
-            elseif cc.pGetDistance(cc.p(self.m_hero:getPosition()),cc.p(self._horse2:getPosition())) < 20 then
+            elseif cc.pGetDistance(cc.p(self.m_hero:getPosition()),cc.p(self.m_horse2:getPosition())) < 20 then
                 self.m_hero:changeMount(self.m_horse2);
-            elseif cc.pGetDistance(cc.p(self.m_hero:getPosition()),cc.p(self._bear:getPosition())) < 30 then
+            elseif cc.pGetDistance(cc.p(self.m_hero:getPosition()),cc.p(self.m_bear:getPosition())) < 30 then
                 self.m_hero:changeMount(self.m_bear);
             end
         end
     end
 
-    self.exitButton =      
-        cc.ui.UIPushButton.new({})
-        :setButtonLabel("normal", cc.Label:createWithTTF("Change Mount", "armature/fonts/arial.ttf", 24))
-        :setButtonLabel("pressed", cc.Label:createWithTTF("Change Mount", "armature/fonts/arial.ttf", 30))
-        :onButtonClicked(function()
-            changeMountCallback()
-        end)
-        :pos(display.right - 240, 60)
-        :addTo(self);
-
+    local label = UICreator.createText("ChangeMount",20,display.CENTER,display.cx,display.cy,0,0,0,"armature/fonts/arial.ttf");
+    self.exitButton =  UICreator.createBtnText(nil,false,display.right -240,60,display.CENTER,nil,nil,label);
+    self.exitButton:addTo(self);
+    self.exitButton:onButtonPressed(function(event)
+    	event.target:setOpacity(128);
+    end)
+    self.exitButton:onButtonRelease(function(event)
+    	event.target:setOpacity(255);
+    end);
+    self.exitButton:onButtonClicked(function()
+       changeMountCallback();
+	end)
 end
 
 function AmatureScene:hideTwelvthAmature()
