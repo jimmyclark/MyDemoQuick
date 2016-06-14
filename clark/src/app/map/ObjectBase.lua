@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 local BehaviorFactory = require("app.behaviors.BehaviorFactory");
 
 local ObjectBase = class("ObjectBase");
@@ -5,13 +6,10 @@ local ObjectBase = class("ObjectBase");
 ObjectBase.CLASS_INDEX_PATH        = 1;
 ObjectBase.CLASS_INDEX_RANGE       = 2;
 ObjectBase.CLASS_INDEX_STATIC      = 3;
-
 ObjectBase.CLASS_INDEX = {
     path       = ObjectBase.CLASS_INDEX_PATH,
     range      = ObjectBase.CLASS_INDEX_RANGE,
     static     = ObjectBase.CLASS_INDEX_STATIC,
-};
-
 function ObjectBase:ctor(id, state, map)
     assert(type(state) == "table", "ObejctBase:ctor() - invalid state");
 
@@ -64,7 +62,7 @@ function ObjectBase:init()
     end
 end
 
-function ObjectBase:isDebug()
+function ObjectBase:isDebug
     return self.m_debug;
 end
 
@@ -295,7 +293,6 @@ function ObjectBase:unbindMethod(behavior, methodName)
     local count = #methods;
     for i = count, 1, -1 do
         local chain = methods[i];
-
         if chain[1] == behavior then
             -- print(string.format("[%s]:unbindMethod(%s, %s)", tostring(self), behavior:getName(), methodName))
             if i < count then
@@ -321,7 +318,6 @@ function ObjectBase:unbindMethod(behavior, methodName)
             --     end
             -- end
             -- print(string.format("  current: %s", tostring(self[methodName])))
-
             break;
         end
     end

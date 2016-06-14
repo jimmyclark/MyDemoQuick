@@ -1,6 +1,7 @@
 local behaviorsClass = {
     CollisionBehavior          = require("app.behaviors.CollisionBehavior"),
     CampBehavior               = require("app.behaviors.CampBehavior"),
+
     DecorateBehavior           = require("app.behaviors.DecorateBehavior"),
     BuildingBehavior           = require("app.behaviors.BuildingBehavior"),
     FireBehavior               = require("app.behaviors.FireBehavior"),

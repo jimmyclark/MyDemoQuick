@@ -38,6 +38,7 @@ function DecorateBehavior:bind(object)
         local flip         = object.m_flipSprite;
 
         local function updateView(source)
+
             if not source then 
                 return;
             end
@@ -62,20 +63,8 @@ function DecorateBehavior:bind(object)
 
     object:bindMethod(self, "updateView", updateView);
 
-    local function fastUpdateView(source, x, y, objectZOrder, batch)
-        if not source then 
-            return;
-        end
-
-        for decorationName, decoration in pairs(source) do
-            local view = decoration:getView();
-            batch:reorderChild(view, objectZOrder + decoration.m_zorder);
-            view:setPosition(x + decoration.m_offsetX, y + decoration.m_offsetY);
-            view:setFlippedX(flip);
-        end
-    end
-
     local function fastUpdateView(object)
+
         if not object.m_updated then 
             return;
         end
