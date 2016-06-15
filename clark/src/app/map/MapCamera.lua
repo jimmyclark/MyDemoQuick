@@ -1,5 +1,5 @@
-local math2d = require("math2d");
-local MapConstants = require("app.map.MapConstant");
+local math2d = require("app.math2d");
+local MapConstants = require("app.map.MapConstants");
 
 local MapCamera = class("MapCamera");
 

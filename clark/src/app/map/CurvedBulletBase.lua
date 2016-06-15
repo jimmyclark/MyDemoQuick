@@ -1,4 +1,4 @@
-local math2d          = require("math2d");
+local math2d          = require("app.math2d");
 local radians4point   = math2d.radians4point;
 local radians2degrees = math2d.radians2degrees;
 local degrees2radians = math2d.degrees2radians;

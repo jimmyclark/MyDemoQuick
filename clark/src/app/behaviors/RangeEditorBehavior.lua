@@ -1,4 +1,4 @@
-local math2d = require("math2d");
+local math2d = require("app.math2d");
 local EditorConstants = require("app.map.EditorConstant");
 
 local BehaviorBase = require("app.behaviors.BehaviorBase");

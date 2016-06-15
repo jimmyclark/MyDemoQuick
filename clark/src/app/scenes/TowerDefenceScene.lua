@@ -2,6 +2,8 @@ local TowerDefenceScene = class("TowerDefenceScene",function()
 	return display.newScene("TowerDefenceScene");
 end);
 
+local LEVEL_ID = "A0002";
+
 function TowerDefenceScene:ctor()
 	self.m_backBtn = UICreator.createBtnText("close.png",true,display.left + 100,display.top - 100,display.CENTER);
 	self.m_backBtn:addTo(self,10);
@@ -22,14 +24,14 @@ function TowerDefenceScene:ctor()
     display.addSpriteFrames("SheetMapBattle.plist", "SheetMapBattle.png");
     display.addSpriteFrames("SheetEditor.plist", "SheetEditor.png");
 
-     -- 根据设备类型确定工具栏的缩放比例
-    -- self.toolbarLines = 1;
-    -- self.editorUIScale = 1;
-    -- self.statusCount_ = 1;
-    -- if (device.platform == "ios" and device.model == "iphone") or device.platform == "android" then
-    --     self.editorUIScale = 2;
-    --     self.toolbarLines = 2;
-    -- end
+     根据设备类型确定工具栏的缩放比例
+    self.toolbarLines = 1;
+    self.editorUIScale = 1;
+    self.statusCount_ = 1;
+    if (device.platform == "ios" and device.model == "iphone") or device.platform == "android" then
+        self.editorUIScale = 2;
+        self.toolbarLines = 2;
+    end
 
     self.m_bg = display.newTilesSprite("EditorBg.png");
     self.m_bg:addTo(self);
@@ -49,16 +51,16 @@ function TowerDefenceScene:ctor()
     self:addChild(self.m_uiLayer);
 
     -- 创建地图对象
-    self.map_ = require("app.map.Map").new(LEVEL_ID, true) -- 参数：地图ID, 是否是编辑器模式
-    self.map_:init()
-    self.map_:createView(self.mapLayer_)
+    self.m_map = require("app.map.Map").new(LEVEL_ID, true); -- 参数：地图ID, 是否是编辑器模式
+    self.m_map:init();
+    self.m_map:createView(self.m_mapLayer);
 
-    -- -- 创建工具栏
-    -- self.toolbar_ = require("editor.Toolbar").new(self.map_)
-    -- self.toolbar_:addTool(require("editor.GeneralTool").new(self.toolbar_, self.map_))
-    -- self.toolbar_:addTool(require("editor.ObjectTool").new(self.toolbar_, self.map_))
-    -- self.toolbar_:addTool(require("editor.PathTool").new(self.toolbar_, self.map_))
-    -- self.toolbar_:addTool(require("editor.RangeTool").new(self.toolbar_, self.map_))
+    -- 创建工具栏
+    self.m_toolBar = require("app.map.ToolBar").new(self.m_map);
+    -- self.m_toolBar:addTool(require("editor.GeneralTool").new(self.m_toolBar, self.map_))
+    -- self.m_toolBar:addTool(require("editor.ObjectTool").new(self.m_toolBar, self.map_))
+    -- self.m_toolBar:addTool(require("editor.PathTool").new(self.m_toolBar, self.map_))
+    -- self.m_toolBar:addTool(require("editor.RangeTool").new(self.m_toolBar, self.map_))
 
     -- -- 创建工具栏的视图
     -- self.toolbarView_ = self.toolbar_:createView(self.uiLayer_, "#ToolbarBg.png", EditorConstants.TOOLBAR_PADDING, self.editorUIScale, self.toolbarLines)

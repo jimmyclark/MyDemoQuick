@@ -31,7 +31,7 @@ local building = {
     maxArmor          = 0,    -- 最大装甲
 };
 
-defines["BuildingP004"] = building;;
+defines["BuildingP004"] = building;
 
 ----------------------
 local building = {
@@ -39,7 +39,7 @@ local building = {
     maxArmor          = 0,    -- 最大装甲
 };
 
-defines["BuildingP005"] = building;;
+defines["BuildingP005"] = building;
 ----------------------
 local building = {
     maxHp             = 2500, -- 最大 HP

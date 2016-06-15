@@ -1,7 +1,7 @@
 --[[
     定义了所有的静态对象
 ]]
-local MapConstants = require("app.map.MapConstant");
+local MapConstants = require("app.map.MapConstants");
 
 local StaticObjectProperties = {};
 local defines = {};
@@ -28,7 +28,7 @@ local object = {
     offsetX     = -10,
     offsetY     = 35,
     decorations = {},
-    campId      = MapConstant.ENEMY_CAMP,
+    campId      = MapConstants.ENEMY_CAMP,
 };
 defines["Building01"] = object;
 
@@ -44,7 +44,7 @@ local object = {
     behaviors   = {"TowerBehavior"},
     fireOffsetX = {0, 0, 0},
     fireOffsetY = {24, 24, 24},
-    campId      = MapConstant.PLAYER_CAMP,
+    campId      = MapConstants.PLAYER_CAMP,
 };
 defines["PlayerTower01"] = object;
 
@@ -59,7 +59,7 @@ local object = {
     behaviors   = {"TowerBehavior"},
     fireOffsetX = {0, 0, 0},
     fireOffsetY = {24, 24, 24},
-    campId      = MapConstant.PLAYER_CAMP,
+    campId      = MapConstants.PLAYER_CAMP,
 };
 defines["PlayerTower02"] = object;
 
