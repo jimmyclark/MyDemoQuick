@@ -1,4 +1,4 @@
-local MapConstants = require("app.map.MapConstant");
+local MapConstants = require("app.map.MapConstants");
 local BehaviorBase = require("app.behaviors.BehaviorBase");
 
 local DestroyedBehavior = class("DestroyedBehavior", BehaviorBase);

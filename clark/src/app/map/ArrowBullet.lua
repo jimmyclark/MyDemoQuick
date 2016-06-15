@@ -1,4 +1,4 @@
-local CurvedBulletBase = require("app.map.bullets.CurvedBulletBase");
+local CurvedBulletBase = require("app.map.CurvedBulletBase");
 local ArrowBullet = class("ArrowBullet", CurvedBulletBase);
 
 function ArrowBullet:ctor(source, target, delay)

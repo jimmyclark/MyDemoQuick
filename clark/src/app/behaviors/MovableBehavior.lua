@@ -1,5 +1,5 @@
-local MapConstants = require("app.map.MapConstant");
-local math2d = require("math2d");
+local MapConstants = require("app.map.MapConstants");
+local math2d = require("app.math2d");
 
 local BehaviorBase = require("app.behaviors.BehaviorBase");
 local MovableBehavior = class("MovableBehavior", BehaviorBase);
@@ -146,12 +146,12 @@ function MovableBehavior:bind(object)
         if not object.m_bindingPathId then 
             return ;
         end
-        if not object.m_map;:isObjectExists(object.m_bindingPathId) then
+        if not object.m_map:isObjectExists(object.m_bindingPathId) then
             object:unbindPath();
             return;
         end
 
-        local path = object.m_map;:getObject(object.m_bindingPathId);
+        local path = object.m_map:getObject(object.m_bindingPathId);
         if object.m_bindingPointIndex < 1 or object.m_bindingPointIndex > path:getPointsCount() then
             object:unbindPath();
             return;

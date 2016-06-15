@@ -70,51 +70,9 @@ LOAD LUA FILE: D:/MyQuickDemo/MyDemoQuick/clark/src/main.lua
 
 [LUA-print] [INFO] #
 
-[LUA-print] ----------------------------------------
+can not get file data of src/maps/MapA0002Data.lua
 
-[LUA-print] LUA ERROR: [string ".\app/scenes/DragScene.lua"]:176: attempt to call method 'changeLayer' (a nil value)
+[LUA-print] not found module file, dump [2016-06-16 08:25:39]
 
-
-[LUA-print] 
-stack traceback:
-	[string ".\app/scenes/DragScene.lua"]:176: in function '?'
-	[string ".\framework/cc/components/behavior/EventProtocol.lua"]:59: in function <[string ".\framework/cc/components/behavior/EventProtocol.lua"]:38>
-	(tail call): ?
-	[string ".\framework/cc/ui/UIPushButton.lua"]:122: in function <[string ".\framework/cc/ui/UIPushButton.lua"]:94>
-	(tail call): ?
-	[string ".\framework/cocos2dx/NodeEx.lua"]:394: in function <[string ".\framework/cocos2dx/NodeEx.lua"]:348>
-
-[LUA-print] ----------------------------------------
-
-[LUA-print] ----------------------------------------
-
-[LUA-print] LUA ERROR: [string ".\app/scenes/DragScene.lua"]:148: attempt to call method 'changeLayer' (a nil value)
-
-
-[LUA-print] 
-stack traceback:
-	[string ".\app/scenes/DragScene.lua"]:148: in function '?'
-	[string ".\framework/cc/components/behavior/EventProtocol.lua"]:59: in function <[string ".\framework/cc/components/behavior/EventProtocol.lua"]:38>
-	(tail call): ?
-	[string ".\framework/cc/ui/UIPushButton.lua"]:122: in function <[string ".\framework/cc/ui/UIPushButton.lua"]:94>
-	(tail call): ?
-	[string ".\framework/cocos2dx/NodeEx.lua"]:394: in function <[string ".\framework/cocos2dx/NodeEx.lua"]:348>
-
-[LUA-print] ----------------------------------------
-
-[LUA-print] ----------------------------------------
-
-[LUA-print] LUA ERROR: [string ".\app/scenes/DragScene.lua"]:148: attempt to call method 'changeLayer' (a nil value)
-
-
-[LUA-print] 
-stack traceback:
-	[string ".\app/scenes/DragScene.lua"]:148: in function '?'
-	[string ".\framework/cc/components/behavior/EventProtocol.lua"]:59: in function <[string ".\framework/cc/components/behavior/EventProtocol.lua"]:38>
-	(tail call): ?
-	[string ".\framework/cc/ui/UIPushButton.lua"]:122: in function <[string ".\framework/cc/ui/UIPushButton.lua"]:94>
-	(tail call): ?
-	[string ".\framework/cocos2dx/NodeEx.lua"]:394: in function <[string ".\framework/cocos2dx/NodeEx.lua"]:348>
-
-[LUA-print] ----------------------------------------
+[LUA-print] not found module file, dump [2016-06-16 08:25:39]
 

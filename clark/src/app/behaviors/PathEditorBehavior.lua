@@ -69,8 +69,8 @@ function PathEditorBehavior:bind(object)
         object.m_polygon:removeSelf();
         object.m_polygon = nil;
 
-        for i, flag in ipairs(object.m_flagsSprite) do;
-            flag:removeSelf()
+        for i, flag in ipairs(object.m_flagsSprite) do
+            flag:removeSelf();
         end
         object.m_flagsSprite = nil;
     end

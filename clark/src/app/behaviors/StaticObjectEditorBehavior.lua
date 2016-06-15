@@ -1,5 +1,5 @@
-local math2d = require("math2d");
-local MapConstants    = require("app.map.MapConstant");
+local math2d = require("app.math2d");
+local MapConstants    = require("app.map.MapConstants");
 local EditorConstants = require("app.map.EditorConstant");
 
 local BehaviorBase = require("app.behaviors.BehaviorBase");
@@ -31,7 +31,7 @@ function StaticObjectEditorBehavior:bind(object)
     local function checkPointIn(object, x, y)
         return math2d.dist(x,
                            y,
-                           object.m_x + object.m_radiusOffsetX,;
+                           object.m_x + object.m_radiusOffsetX,
                            object.m_y + object.m_radiusOffsetY) <= object.m_radius;
     end
 
@@ -101,7 +101,7 @@ function StaticObjectEditorBehavior:bind(object)
         object.m_flagSprite:removeSelf();
         object.m_flagSprite = nil;
 
-        if object.m_fireRangeCircle then;
+        if object.m_fireRangeCircle then
             object.m_fireRangeCircle:removeSelf();
             object.m_fireRangeCircle = nil;
         end

@@ -1,4 +1,4 @@
-local StaticObjectsDecorationProperties = require("app.properties.StaticObjectsDecorationProperties");
+local StaticObjectsDecorationProperties = require("app.properties.StaticDecorationObjectProperties");
 
 local Decoration = class("Decoration");
 

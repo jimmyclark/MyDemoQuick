@@ -1,4 +1,4 @@
-local MapConstants  = require("app.map.MapConstant");
+local MapConstants  = require("app.map.MapConstants");
 local BulletType    = require("app.map.BulletType");
 local BulletFactory = require("app.map.BulletFactory");
 
@@ -100,7 +100,7 @@ function FireBehavior:bind(object)
             end
         end
 
-        object.m_fireCooldown; = object.m_cooldown * math.random(80, 120) / 100;
+        object.m_fireCooldown = object.m_cooldown * math.random(80, 120) / 100;
         local delay = nil;
         if object:hasBehavior("NPCBehavior") or object:hasBehavior("PlayerBehavior") then
             delay = 0;

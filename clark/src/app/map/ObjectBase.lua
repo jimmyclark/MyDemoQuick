@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 local BehaviorFactory = require("app.behaviors.BehaviorFactory");
 
 local ObjectBase = class("ObjectBase");
@@ -10,6 +9,8 @@ ObjectBase.CLASS_INDEX = {
     path       = ObjectBase.CLASS_INDEX_PATH,
     range      = ObjectBase.CLASS_INDEX_RANGE,
     static     = ObjectBase.CLASS_INDEX_STATIC,
+};
+
 function ObjectBase:ctor(id, state, map)
     assert(type(state) == "table", "ObejctBase:ctor() - invalid state");
 
@@ -62,7 +63,7 @@ function ObjectBase:init()
     end
 end
 
-function ObjectBase:isDebug
+function ObjectBase:isDebug()
     return self.m_debug;
 end
 
