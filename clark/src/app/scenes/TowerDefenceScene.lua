@@ -2,10 +2,7 @@ local TowerDefenceScene = class("TowerDefenceScene",function()
 	return display.newScene("TowerDefenceScene");
 end);
 
-<<<<<<< HEAD
 local EditorConstants = require("app.map.EditorConstant");
-=======
->>>>>>> 30eb80bdea18e1a21d839962af61d1c7941159a5
 local LEVEL_ID = "A0002";
 
 function TowerDefenceScene:ctor()
