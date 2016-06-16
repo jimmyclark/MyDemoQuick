@@ -2,7 +2,10 @@ local TowerDefenceScene = class("TowerDefenceScene",function()
 	return display.newScene("TowerDefenceScene");
 end);
 
+<<<<<<< HEAD
 local EditorConstants = require("app.map.EditorConstant");
+=======
+>>>>>>> 30eb80bdea18e1a21d839962af61d1c7941159a5
 local LEVEL_ID = "A0002";
 
 function TowerDefenceScene:ctor()
@@ -25,10 +28,17 @@ function TowerDefenceScene:ctor()
     display.addSpriteFrames("SheetMapBattle.plist", "SheetMapBattle.png");
     display.addSpriteFrames("SheetEditor.plist", "SheetEditor.png");
 
+<<<<<<< HEAD
     -- 根据设备类型确定工具栏的缩放比例
     self.toolbarLines = 1;
     self.editorUIScale = 1;
     self.m_statusCount = 1;
+=======
+     根据设备类型确定工具栏的缩放比例
+    self.toolbarLines = 1;
+    self.editorUIScale = 1;
+    self.statusCount_ = 1;
+>>>>>>> 30eb80bdea18e1a21d839962af61d1c7941159a5
     if (device.platform == "ios" and device.model == "iphone") or device.platform == "android" then
         self.editorUIScale = 2;
         self.toolbarLines = 2;
@@ -79,6 +89,28 @@ function TowerDefenceScene:ctor()
         self.m_toolBar:dispatchEvent(event);
     end)
     self.m_objectInspector:createView(self.m_uiLayer);
+    -- self.m_toolBar:addTool(require("editor.GeneralTool").new(self.m_toolBar, self.map_))
+    -- self.m_toolBar:addTool(require("editor.ObjectTool").new(self.m_toolBar, self.map_))
+    -- self.m_toolBar:addTool(require("editor.PathTool").new(self.m_toolBar, self.map_))
+    -- self.m_toolBar:addTool(require("editor.RangeTool").new(self.m_toolBar, self.map_))
+
+    -- -- 创建工具栏的视图
+    -- self.toolbarView_ = self.toolbar_:createView(self.uiLayer_, "#ToolbarBg.png", EditorConstants.TOOLBAR_PADDING, self.editorUIScale, self.toolbarLines)
+    -- self.toolbarView_:setPosition(display.c_left, display.c_bottom)
+    -- self.toolbar_:setDefaultTouchTool("GeneralTool")
+    -- self.toolbar_:selectButton("GeneralTool", 1)
+
+    -- -- 创建对象信息面板
+    -- local objectInspectorScale = 1
+    -- -- if self.editorUIScale > 1 then
+    -- --     objectInspectorScale = 1.5
+    -- -- end
+    -- self.objectInspector_ = require("editor.ObjectInspector").new(self.map_, objectInspectorScale, self.toolbarLines)
+    -- self.objectInspector_:addEventListener("UPDATE_OBJECT", function(event)
+    --     self.toolbar_:dispatchEvent(event)
+    -- end)
+    -- self.objectInspector_:createView(self.uiLayer_)
+>>>>>>> 30eb80bdea18e1a21d839962af61d1c7941159a5
 
     -- -- 创建地图名称文字标签
     -- self.mapNameLabel_ = cc.ui.UILabel.new({
