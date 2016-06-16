@@ -24,18 +24,11 @@ function TowerDefenceScene:ctor()
 
     display.addSpriteFrames("SheetMapBattle.plist", "SheetMapBattle.png");
     display.addSpriteFrames("SheetEditor.plist", "SheetEditor.png");
-
-<<<<<<< HEAD
-    -- 根据设备类型确定工具栏的缩放比例
-    self.toolbarLines = 1;
-    self.editorUIScale = 1;
-    self.m_statusCount = 1;
-=======
-     根据设备类型确定工具栏的缩放比例
+    --根据设备类型确定工具栏的缩放比例
     self.toolbarLines = 1;
     self.editorUIScale = 1;
     self.statusCount_ = 1;
->>>>>>> 30eb80bdea18e1a21d839962af61d1c7941159a5
+
     if (device.platform == "ios" and device.model == "iphone") or device.platform == "android" then
         self.editorUIScale = 2;
         self.toolbarLines = 2;
@@ -107,7 +100,6 @@ function TowerDefenceScene:ctor()
     --     self.toolbar_:dispatchEvent(event)
     -- end)
     -- self.objectInspector_:createView(self.uiLayer_)
->>>>>>> 30eb80bdea18e1a21d839962af61d1c7941159a5
 
     -- -- 创建地图名称文字标签
     -- self.mapNameLabel_ = cc.ui.UILabel.new({
